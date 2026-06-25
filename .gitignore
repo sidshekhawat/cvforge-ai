@@ -144,3 +144,24 @@ vite.config.ts.timestamp-*
 
 
 backend/venv/
+
+# ------------------------
+# Python
+# ------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Virtual Environments
+venv/
+backend/venv/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
