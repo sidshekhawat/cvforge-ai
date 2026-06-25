@@ -164,4 +164,4 @@ backend/venv/
 .vscode/
 
 # macOS
-.DS_Store
+.DS_Storegit status
