@@ -9,6 +9,7 @@ from app.models.user import User
 
 from app.schemas.resume import (
     ResumeCreate,
+    ResumeUpdate,
     ResumeResponse
 )
 
@@ -111,3 +112,36 @@ def delete_resume(
     return {
         "message": "Resume deleted successfully"
     }
+
+@router.put(
+    "/{resume_id}",
+    response_model=ResumeResponse
+)
+def update_resume(
+    resume_id: int,
+    resume_data: ResumeUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    resume = (
+        db.query(Resume)
+        .filter(
+            Resume.id == resume_id,
+            Resume.owner_id == current_user.id
+        )
+        .first()
+    )
+
+    if not resume:
+        raise HTTPException(
+            status_code=404,
+            detail="Resume not found"
+        )
+
+    resume.title = resume_data.title
+    resume.content = resume_data.content
+
+    db.commit()
+    db.refresh(resume)
+
+    return resume

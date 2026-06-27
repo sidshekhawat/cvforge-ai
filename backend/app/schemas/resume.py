@@ -6,6 +6,10 @@ class ResumeCreate(BaseModel):
     title: str
     content: Optional[str] = None
 
+class ResumeUpdate(BaseModel):
+    title: str
+    content: Optional[str] = None
+
 
 class ResumeResponse(BaseModel):
     id: int
