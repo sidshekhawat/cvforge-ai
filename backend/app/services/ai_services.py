@@ -139,3 +139,39 @@ Template Guidance:
     )
 
     return response.choices[0].message.content
+
+import re
+
+
+def analyze_resume_keywords(
+    resume: str,
+    job_description: str
+):
+    resume_words = set(
+        re.findall(r"\b\w+\b", resume.lower())
+    )
+
+    jd_words = set(
+        re.findall(r"\b\w+\b", job_description.lower())
+    )
+
+    stop_words = {
+    "a", "an", "the", "and", "or", "but",
+    "is", "are", "was", "were",
+    "to", "of", "in", "on", "for",
+    "with", "at", "by", "from",
+    "have", "has", "had",
+    "be", "been", "being"
+}
+    resume_words = resume_words - stop_words
+    jd_words = jd_words - stop_words
+
+    matched_keywords = sorted(
+        list(resume_words & jd_words)
+    )
+
+    missing_keywords = sorted(
+        list(jd_words - resume_words)
+    )
+
+    return matched_keywords, missing_keywords

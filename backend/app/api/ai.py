@@ -23,6 +23,11 @@ router = APIRouter(
     tags=["AI"]
 )
 
+from app.services.ai_services import (
+    generate_resume,
+    analyze_resume_keywords
+)
+
 
 @router.post(
 
@@ -82,10 +87,16 @@ def generate_and_save_resume(
 def analyze_resume(
     data: ResumeAnalysisRequest
 ):
+    matched_keywords, missing_keywords = (
+        analyze_resume_keywords(
+            data.resume,
+            data.job_description
+        )
+    )
     return {
         "ats_score": 0,
-        "matched_keywords": [],
-        "missing_keywords": [],
+        "matched_keywords": matched_keywords,
+        "missing_keywords": missing_keywords,
         "strengths": [],
         "weaknesses": [],
         "suggestions": []
