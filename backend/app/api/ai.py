@@ -2,7 +2,9 @@ from fastapi import APIRouter
 
 from app.schemas.ai import (
     ResumeGenerationRequest,
-    ResumeGenerationResponse
+    ResumeGenerationResponse,
+    ResumeAnalysisRequest,
+    ResumeAnalysisResponse
 )
 
 from app.services.ai_services import generate_resume
@@ -72,3 +74,19 @@ def generate_and_save_resume(
     db.refresh(resume)
 
     return resume
+
+@router.post(
+    "/analyze-resume",
+    response_model=ResumeAnalysisResponse
+)
+def analyze_resume(
+    data: ResumeAnalysisRequest
+):
+    return {
+        "ats_score": 0,
+        "matched_keywords": [],
+        "missing_keywords": [],
+        "strengths": [],
+        "weaknesses": [],
+        "suggestions": []
+    }

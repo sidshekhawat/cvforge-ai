@@ -17,3 +17,23 @@ class ResumeGenerationRequest(BaseModel):
 
 class ResumeGenerationResponse(BaseModel):
     resume: str
+
+class ResumeAnalysisRequest(BaseModel):
+
+    resume: str
+
+    job_description: str
+
+class ResumeAnalysisResponse(BaseModel):
+
+    ats_score: int
+
+    matched_keywords: list[str]
+
+    missing_keywords: list[str]
+
+    strengths: list[str]
+
+    weaknesses: list[str]
+
+    suggestions: list[str]
