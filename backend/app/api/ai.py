@@ -35,7 +35,8 @@ def generate_resume_api(
         name=data.name,
         skills=data.skills,
         experience=data.experience,
-        education=data.education
+        education=data.education,
+        template=data.template
     )
 
     return {"resume": resume}
@@ -56,7 +57,8 @@ def generate_and_save_resume(
         name=data.name,
         skills=data.skills,
         experience=data.experience,
-        education=data.education
+        education=data.education,
+        template=data.template
     )
 
     resume = Resume(

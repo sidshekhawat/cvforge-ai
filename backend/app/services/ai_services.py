@@ -9,8 +9,31 @@ def generate_resume(
     name: str,
     skills: str,
     experience: str,
-    education: str
+    education: str,
+    template: str
 ):
+    template_instructions = {
+    "software_engineer":
+        "Focus on programming languages, software development, APIs, databases, Git, projects, and engineering achievements.",
+
+    "cybersecurity_analyst":
+        "Focus on cybersecurity, network security, vulnerability assessment, incident response, threat detection, digital forensics, and security projects.",
+
+    "data_analyst":
+        "Focus on SQL, Excel, Power BI, Tableau, Python, data visualization, reporting, and analytics projects.",
+
+    "machine_learning_engineer":
+        "Focus on machine learning, deep learning, AI models, data science, Python, TensorFlow, PyTorch, and AI projects.",
+
+    "fresher":
+        "Focus on education, academic achievements, internships, certifications, technical skills, and student projects."
+}
+    
+
+    selected_template = template_instructions.get(
+    template,
+    template_instructions["software_engineer"]
+)
     prompt = f"""
 Generate an ATS-friendly professional resume.
 
@@ -100,7 +123,9 @@ SecureVision
 
 Convert the provided experience into strong resume bullet points.
 
-Make the resume look suitable for software engineering and technology roles.
+Template Guidance:
+
+{selected_template}
 """
 
     response = client.chat.completions.create(
