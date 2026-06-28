@@ -175,3 +175,86 @@ def analyze_resume_keywords(
     )
 
     return matched_keywords, missing_keywords
+
+def review_resume(
+    resume: str,
+    job_description: str
+):
+    prompt = f"""
+    You are an ATS resume reviewer.
+
+Analyze the resume against the job description.
+
+Resume:
+{resume}
+
+Job Description:
+{job_description}
+
+Return your response EXACTLY in this format:
+
+STRENGTHS:
+- strength 1
+- strength 2
+- strength 3
+
+WEAKNESSES:
+- weakness 1
+- weakness 2
+- weakness 3
+
+SUGGESTIONS:
+- suggestion 1
+- suggestion 2
+- suggestion 3
+
+Do not include any introduction or conclusion.
+"""
+
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
+    )
+
+    return response.choices[0].message.content
+
+def parse_review(review_text: str):
+    strengths = []
+    weaknesses = []
+    suggestions = []
+
+    current_section = None
+
+    for line in review_text.splitlines():
+        line = line.strip()
+
+        if line.startswith("STRENGTHS"):
+            current_section = "strengths"
+            continue
+
+        elif line.startswith("WEAKNESSES"):
+            current_section = "weaknesses"
+            continue
+
+        elif line.startswith("SUGGESTIONS"):
+            current_section = "suggestions"
+            continue
+
+        elif line.startswith("-"):
+            item = line.lstrip("- ").strip()
+
+            if current_section == "strengths":
+                strengths.append(item)
+
+            elif current_section == "weaknesses":
+                weaknesses.append(item)
+
+            elif current_section == "suggestions":
+                suggestions.append(item)
+
+    return strengths, weaknesses, suggestions

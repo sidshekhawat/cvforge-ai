@@ -25,7 +25,9 @@ router = APIRouter(
 
 from app.services.ai_services import (
     generate_resume,
-    analyze_resume_keywords
+    analyze_resume_keywords,
+    review_resume,
+    parse_review
 )
 
 
@@ -93,11 +95,18 @@ def analyze_resume(
             data.job_description
         )
     )
+    review = review_resume(
+    data.resume,
+    data.job_description
+    )
+    strengths, weaknesses, suggestions = (
+    parse_review(review)
+    )
     return {
         "ats_score": 0,
         "matched_keywords": matched_keywords,
         "missing_keywords": missing_keywords,
-        "strengths": [],
-        "weaknesses": [],
-        "suggestions": []
+        "strengths": strengths,
+        "weaknesses": weaknesses,
+        "suggestions": suggestions
     }
