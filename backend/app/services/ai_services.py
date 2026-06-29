@@ -162,6 +162,25 @@ def analyze_resume_keywords(
     "with", "at", "by", "from",
     "have", "has", "had",
     "be", "been", "being"
+
+    # ATS noise words
+    "we", "our", "you", "your", "looking",
+    "required", "preferred", "responsibilities",
+    "responsibility", "include", "includes",
+    "including", "skills", "skill",
+    "experience", "job", "role",
+    "candidate", "candidates", "work",
+    "working", "team", "ability",
+
+    # Generic resume words
+    "professional", "summary",
+    "education", "projects",
+    "project",
+
+    # Generic tech hiring words
+    "software", "engineer",
+    "engineering", "developer",
+    "development"
 }
     resume_words = resume_words - stop_words
     jd_words = jd_words - stop_words
@@ -258,3 +277,81 @@ def parse_review(review_text: str):
                 suggestions.append(item)
 
     return strengths, weaknesses, suggestions
+
+def calculate_structure_score(
+    resume: str
+):
+    score = 0
+
+    sections = [
+        "summary",
+        "skills",
+        "experience",
+        "education",
+        "projects"
+    ]
+
+    resume_lower = resume.lower()
+
+    for section in sections:
+        if section in resume_lower:
+            score += 4
+
+    return score
+
+def calculate_skills_score(
+    matched_keywords,
+    missing_keywords
+):
+    total_skills = (
+        len(matched_keywords)
+        + len(missing_keywords)
+    )
+
+    if total_skills == 0:
+        return 0
+
+    return int(
+        (len(matched_keywords) / total_skills)
+        * 20
+    )
+
+def calculate_final_ats_score(
+    matched_keywords,
+    missing_keywords,
+    structure_score,
+    skills_score,
+    weaknesses
+):
+    total_keywords = (
+        len(matched_keywords)
+        + len(missing_keywords)
+    )
+
+    # Keyword Score (50)
+    if total_keywords == 0:
+        keyword_score = 0
+    else:
+        keyword_score = int(
+            (len(matched_keywords) / total_keywords)
+            * 50
+        )
+
+    # AI Review Score (10)
+    if len(weaknesses) <= 1:
+        review_score = 10
+    elif len(weaknesses) == 2:
+        review_score = 8
+    elif len(weaknesses) == 3:
+        review_score = 6
+    else:
+        review_score = 4
+
+    final_score = (
+        keyword_score
+        + structure_score
+        + skills_score
+        + review_score
+    )
+
+    return min(final_score, 100)

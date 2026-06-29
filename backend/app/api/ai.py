@@ -27,7 +27,10 @@ from app.services.ai_services import (
     generate_resume,
     analyze_resume_keywords,
     review_resume,
-    parse_review
+    parse_review,
+    calculate_structure_score,
+    calculate_skills_score,
+    calculate_final_ats_score
 )
 
 
@@ -102,8 +105,22 @@ def analyze_resume(
     strengths, weaknesses, suggestions = (
     parse_review(review)
     )
+    structure_score = calculate_structure_score(
+    data.resume
+    )
+    skills_score = calculate_skills_score(
+        matched_keywords,
+        missing_keywords
+    )
+    ats_score = calculate_final_ats_score(
+        matched_keywords,
+        missing_keywords,
+        structure_score,
+        skills_score,
+        weaknesses
+    )
     return {
-        "ats_score": 0,
+        "ats_score": ats_score,
         "matched_keywords": matched_keywords,
         "missing_keywords": missing_keywords,
         "strengths": strengths,
