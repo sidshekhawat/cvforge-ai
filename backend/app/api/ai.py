@@ -35,6 +35,13 @@ from app.services.ai_services import (
     calculate_final_ats_score,
     optimize_resume
 )
+from fastapi.responses import FileResponse
+from app.services.pdf_service import (
+    generate_resume_pdf
+)
+from app.schemas.ai import (
+    ResumePDFRequest
+)
 
 
 @router.post(
@@ -145,3 +152,20 @@ def optimize_resume_endpoint(
     return {
         "optimized_resume": optimized_resume
     }
+
+@router.post("/export-pdf")
+def export_pdf(
+    data: ResumePDFRequest
+):
+    file_path = "resume.pdf"
+
+    generate_resume_pdf(
+        data.resume_content,
+        file_path
+    )
+
+    return FileResponse(
+        file_path,
+        media_type="application/pdf",
+        filename="resume.pdf"
+    )

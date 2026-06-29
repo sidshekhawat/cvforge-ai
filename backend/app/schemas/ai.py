@@ -44,3 +44,6 @@ class ResumeOptimizationRequest(BaseModel):
 
 class ResumeOptimizationResponse(BaseModel):
     optimized_resume: str
+
+class ResumePDFRequest(BaseModel):
+    resume_content: str
