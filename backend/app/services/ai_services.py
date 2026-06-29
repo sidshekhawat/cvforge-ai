@@ -51,37 +51,22 @@ Education:
 {education}
 
 Requirements:
-
 - Do NOT use markdown.
-
 - Do NOT use ** symbols.
-
 - Do NOT use # headings.
-
 - Do NOT invent phone numbers.
-
 - Do NOT invent email addresses.
-
 - Do NOT invent LinkedIn profiles.
-
 - Do NOT add placeholder fields such as "Not Provided".
 
 Formatting Rules:
-
 - Keep the resume ATS-friendly.
-
 - Use clear section headings.
-
 - Use bullet points for Skills.
-
 - Use bullet points for Experience.
-
 - Use bullet points for Projects.
-
 - Limit the Professional Summary to 2-3 lines.
-
 - Keep descriptions concise and professional.
-
 - Do not write large paragraphs.
 
 Resume Format:
@@ -355,3 +340,40 @@ def calculate_final_ats_score(
     )
 
     return min(final_score, 100)
+
+def optimize_resume(
+    resume: str,
+    job_description: str
+):
+    prompt = f"""
+    You are an expert ATS resume optimizer.
+
+    Your task is to improve the resume while keeping it completely truthful.
+
+    Rules:
+    1. Improve formatting and readability.
+    2. Improve ATS compatibility.
+    3. Reorganize information where useful.
+    4. Preserve all existing facts.
+    5. Do NOT invent skills, technologies, certifications, education, projects, companies, or job experience.
+    6. Do NOT claim knowledge of tools not present in the original resume.
+    7. If a skill is missing from the resume, do not add it.
+    8. Return only the optimized resume.
+    
+    RESUME:
+    {resume}
+
+    JOB DESCRIPTION:
+    {job_description}
+    """
+
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
+    )
+    return response.choices[0].message.content

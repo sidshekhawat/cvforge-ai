@@ -37,3 +37,10 @@ class ResumeAnalysisResponse(BaseModel):
     weaknesses: list[str]
 
     suggestions: list[str]
+
+class ResumeOptimizationRequest(BaseModel):
+    resume: str
+    job_description: str
+
+class ResumeOptimizationResponse(BaseModel):
+    optimized_resume: str

@@ -4,7 +4,9 @@ from app.schemas.ai import (
     ResumeGenerationRequest,
     ResumeGenerationResponse,
     ResumeAnalysisRequest,
-    ResumeAnalysisResponse
+    ResumeAnalysisResponse,
+    ResumeOptimizationRequest,
+    ResumeOptimizationResponse
 )
 
 from app.services.ai_services import generate_resume
@@ -30,7 +32,8 @@ from app.services.ai_services import (
     parse_review,
     calculate_structure_score,
     calculate_skills_score,
-    calculate_final_ats_score
+    calculate_final_ats_score,
+    optimize_resume
 )
 
 
@@ -126,4 +129,19 @@ def analyze_resume(
         "strengths": strengths,
         "weaknesses": weaknesses,
         "suggestions": suggestions
+    }
+
+@router.post(
+    "/optimize-resume",
+    response_model=ResumeOptimizationResponse
+)
+def optimize_resume_endpoint(
+    data: ResumeOptimizationRequest
+):
+    optimized_resume = optimize_resume(
+    data.resume,
+    data.job_description
+    )
+    return {
+        "optimized_resume": optimized_resume
     }
