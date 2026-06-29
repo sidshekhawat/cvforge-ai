@@ -6,7 +6,9 @@ from app.schemas.ai import (
     ResumeAnalysisRequest,
     ResumeAnalysisResponse,
     ResumeOptimizationRequest,
-    ResumeOptimizationResponse
+    ResumeOptimizationResponse,
+    CoverLetterRequest,
+    CoverLetterResponse
 )
 
 from app.services.ai_services import generate_resume
@@ -33,7 +35,8 @@ from app.services.ai_services import (
     calculate_structure_score,
     calculate_skills_score,
     calculate_final_ats_score,
-    optimize_resume
+    optimize_resume,
+    generate_cover_letter
 )
 from fastapi.responses import FileResponse
 from app.services.pdf_service import (
@@ -169,3 +172,19 @@ def export_pdf(
         media_type="application/pdf",
         filename="resume.pdf"
     )
+
+@router.post(
+    "/generate-cover-letter",
+    response_model=CoverLetterResponse
+)
+def generate_cover_letter_endpoint(
+    data: CoverLetterRequest
+):
+    cover_letter = generate_cover_letter(
+        data.resume,
+        data.job_description
+    )
+
+    return {
+        "cover_letter": cover_letter
+    }

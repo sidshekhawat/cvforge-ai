@@ -47,3 +47,10 @@ class ResumeOptimizationResponse(BaseModel):
 
 class ResumePDFRequest(BaseModel):
     resume_content: str
+
+class CoverLetterRequest(BaseModel):
+    resume: str
+    job_description: str
+
+class CoverLetterResponse(BaseModel):
+    cover_letter: str

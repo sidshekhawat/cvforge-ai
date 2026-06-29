@@ -359,7 +359,7 @@ def optimize_resume(
     6. Do NOT claim knowledge of tools not present in the original resume.
     7. If a skill is missing from the resume, do not add it.
     8. Return only the optimized resume.
-    
+
     RESUME:
     {resume}
 
@@ -376,4 +376,38 @@ def optimize_resume(
             }
         ]
     )
+    return response.choices[0].message.content
+
+def generate_cover_letter(
+    resume: str,
+    job_description: str
+):
+    prompt = f"""
+    You are an expert career coach and recruiter.
+
+    Using the resume and job description:
+
+    1. Write a professional cover letter.
+    2. Keep it concise.
+    3. Tailor it to the job.
+    4. Highlight relevant experience.
+    5. Do not invent qualifications.
+    6. Return only the cover letter.
+
+    RESUME:
+    {resume}
+
+    JOB DESCRIPTION:
+    {job_description}
+    """
+    response = client.chat.completions.create(
+    model="llama-3.3-70b-versatile",
+    messages=[
+        {
+            "role": "user",
+            "content": prompt
+        }
+    ]
+)
+
     return response.choices[0].message.content
