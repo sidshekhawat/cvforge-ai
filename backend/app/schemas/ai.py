@@ -48,6 +48,12 @@ class ResumeOptimizationResponse(BaseModel):
 class ResumePDFRequest(BaseModel):
     resume_content: str
 
+    theme: Literal[
+        "classic",
+        "modern",
+        "minimal"
+    ] = "classic"
+
 class CoverLetterRequest(BaseModel):
     resume: str
     job_description: str

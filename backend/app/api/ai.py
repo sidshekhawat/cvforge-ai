@@ -164,7 +164,8 @@ def export_pdf(
 
     generate_resume_pdf(
         data.resume_content,
-        file_path
+        file_path,
+        data.theme
     )
 
     return FileResponse(
