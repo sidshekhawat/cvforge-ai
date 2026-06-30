@@ -48,6 +48,14 @@ class ResumeOptimizationResponse(BaseModel):
 class ResumePDFRequest(BaseModel):
     resume_content: str
 
+    name: str
+    email: str
+    phone: str
+    
+    linkedin: str | None = None
+    github: str | None = None
+    location: str | None = None    
+
     theme: Literal[
         "classic",
         "modern",

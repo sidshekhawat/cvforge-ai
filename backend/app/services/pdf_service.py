@@ -8,11 +8,19 @@ from reportlab.lib.styles import getSampleStyleSheet
 
 from reportlab.lib.styles import ParagraphStyle
 
+from reportlab.platypus import HRFlowable
+
 
 def generate_resume_pdf(
     resume_content: str,
     file_path: str,
-    theme: str
+    theme: str,
+    name: str,
+    email: str,
+    phone: str,
+    linkedin: str | None,
+    github: str | None,
+    location: str | None
 ):
     doc = SimpleDocTemplate(file_path)
 
@@ -21,15 +29,16 @@ def generate_resume_pdf(
     title_style = ParagraphStyle(
     "CVForgeTitle",
     parent=styles["Title"],
-    fontSize=22,
-    leading=26
+    fontSize=24,
+    leading=28
     )
 
     heading_style = ParagraphStyle(
     "CVForgeHeading",
     parent=styles["Heading2"],
-    fontSize=14,
-    leading=18
+    fontSize=15,
+    leading=18,
+    spaceAfter=4
     )
 
     body_style = ParagraphStyle(
@@ -46,7 +55,13 @@ def generate_resume_pdf(
     if theme == "classic":
         generate_classic_pdf(
             sections,
-            file_path
+            file_path,
+            name,
+            email,
+            phone,
+            linkedin,
+            github,
+            location
         )
         return
     
@@ -108,7 +123,13 @@ def parse_resume_sections(
 
 def generate_classic_pdf(
     sections,
-    file_path
+    file_path,
+     name,
+     email,
+     phone,
+     linkedin,
+     github,
+     location
 ):
      
     doc = SimpleDocTemplate(file_path)
@@ -118,15 +139,16 @@ def generate_classic_pdf(
     title_style = ParagraphStyle(
         "CVForgeTitle",
         parent=styles["Title"],
-        fontSize=22,
-        leading=26
+        fontSize=24,
+        leading=28
     )
 
     heading_style = ParagraphStyle(
         "CVForgeHeading",
         parent=styles["Heading2"],
         fontSize=16,
-        leading=18
+        leading=18,
+        spaceAfter=4
     )
 
     body_style = ParagraphStyle(
@@ -135,16 +157,62 @@ def generate_classic_pdf(
         fontSize=11,
         leading=14
     )
+
+    header_style = ParagraphStyle(
+        "CVForgeHeader",
+        parent=styles["BodyText"],
+        fontSize=10,
+        leading=12,
+        alignment=1
+    )
     story = []
 
     story.append(
             Paragraph(
-                "CVForge AI Resume",
+                name,
                 title_style
             )
         )
+    
+    contact_info = f"{phone} | {email}"
+    story.append(
+        Paragraph(
+            contact_info,
+            header_style
+        )
+    )
     story.append(
             Spacer(1, 20)
+        )
+    
+    links = []
+
+    if linkedin:
+        links.append(linkedin)
+    if github:
+        links.append(github)
+    if location:
+        links.append(location)
+    
+    if links:
+        story.append(
+            Paragraph(
+                " | ".join(links),
+                header_style
+            )
+        )
+        story.append(
+            Spacer(1, 6)
+        )
+
+        story.append(
+            HRFlowable(
+                width="100%"
+            )
+        )
+
+        story.append(
+            Spacer(1, 10)
         )
 
     section_titles = {
