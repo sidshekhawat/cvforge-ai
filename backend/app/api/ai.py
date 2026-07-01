@@ -50,6 +50,10 @@ from app.services.experience_scorer import (
     calculate_experience_score
 )
 
+from app.services.project_scorer import (
+    calculate_project_score
+)
+
 @router.post(
 
     "/generate",
@@ -122,6 +126,14 @@ def analyze_resume(
             data.job_description
         )
     )
+    project_score, \
+    matched_project_keywords, \
+    missing_project_keywords = (
+        calculate_project_score(
+            data.resume,
+            data.job_description
+        )
+    )
     review = review_resume(
     data.resume,
     data.job_description
@@ -146,10 +158,13 @@ def analyze_resume(
     return {
         "ats_score": ats_score,
         "experience_score": experience_score,
+        "project_score": project_score,
         "matched_keywords": matched_keywords,
         "missing_keywords": missing_keywords,
         "matched_experience_keywords": matched_experience_keywords,
         "missing_experience_keywords": missing_experience_keywords,
+        "matched_project_keywords": matched_project_keywords,
+        "missing_project_keywords": missing_project_keywords,
         "strengths": strengths,
         "weaknesses": weaknesses,
         "suggestions": suggestions

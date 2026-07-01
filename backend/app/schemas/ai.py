@@ -27,19 +27,19 @@ class ResumeAnalysisRequest(BaseModel):
 class ResumeAnalysisResponse(BaseModel):
 
     ats_score: int
-
     experience_score: int
+    project_score: int
 
     matched_keywords: list[str]
-
     missing_keywords: list[str]
 
     matched_experience_keywords: list[str]
-
     missing_experience_keywords: list[str]
 
-    strengths: list[str]
+    matched_project_keywords: list[str]
+    missing_project_keywords: list[str]
 
+    strengths: list[str]
     weaknesses: list[str]
 
     suggestions: list[str]
