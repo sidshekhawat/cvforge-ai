@@ -46,6 +46,9 @@ from app.schemas.ai import (
     ResumePDFRequest
 )
 
+from app.services.experience_scorer import (
+    calculate_experience_score
+)
 
 @router.post(
 
@@ -111,6 +114,14 @@ def analyze_resume(
             data.job_description
         )
     )
+    experience_score, \
+    matched_experience_keywords, \
+    missing_experience_keywords = (
+        calculate_experience_score(
+            data.resume,
+            data.job_description
+        )
+    )
     review = review_resume(
     data.resume,
     data.job_description
@@ -134,12 +145,15 @@ def analyze_resume(
     )
     return {
         "ats_score": ats_score,
+        "experience_score": experience_score,
         "matched_keywords": matched_keywords,
         "missing_keywords": missing_keywords,
+        "matched_experience_keywords": matched_experience_keywords,
+        "missing_experience_keywords": missing_experience_keywords,
         "strengths": strengths,
         "weaknesses": weaknesses,
         "suggestions": suggestions
-    }
+        }
 
 @router.post(
     "/optimize-resume",
