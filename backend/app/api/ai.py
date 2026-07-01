@@ -56,6 +56,9 @@ from app.services.project_scorer import (
 from app.services.education_scorer import (
     calculate_education_score
 )
+from app.services.certification_scorer import (
+    calculate_certification_score
+)
 @router.post(
 
     "/generate",
@@ -144,6 +147,14 @@ def analyze_resume(
             data.job_description
         )
     )
+    certification_score, \
+    matched_certification_keywords, \
+    missing_certification_keywords = (
+        calculate_certification_score(
+            data.resume,
+            data.job_description
+        )
+    )
     review = review_resume(
     data.resume,
     data.job_description
@@ -167,17 +178,20 @@ def analyze_resume(
     )
     return {
         "ats_score": ats_score,
-        "education_score": education_score,
         "experience_score": experience_score,
         "project_score": project_score,
+        "education_score": education_score,
+        "certification_score": certification_score,
         "matched_keywords": matched_keywords,
         "missing_keywords": missing_keywords,
-        "matched_education_keywords": matched_education_keywords,
-        "missing_education_keywords": missing_education_keywords,
         "matched_experience_keywords": matched_experience_keywords,
         "missing_experience_keywords": missing_experience_keywords,
         "matched_project_keywords": matched_project_keywords,
         "missing_project_keywords": missing_project_keywords,
+        "matched_education_keywords": matched_education_keywords,
+        "missing_education_keywords": missing_education_keywords,
+        "matched_certification_keywords": matched_certification_keywords,
+        "missing_certification_keywords": missing_certification_keywords,
         "strengths": strengths,
         "weaknesses": weaknesses,
         "suggestions": suggestions

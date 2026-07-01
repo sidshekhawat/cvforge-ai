@@ -27,15 +27,14 @@ class ResumeAnalysisRequest(BaseModel):
 class ResumeAnalysisResponse(BaseModel):
 
     ats_score: int
-    education_score: int
+    
     experience_score: int
     project_score: int
+    education_score: int
+    certification_score: int
 
     matched_keywords: list[str]
     missing_keywords: list[str]
-
-    matched_education_keywords: list[str]
-    missing_education_keywords: list[str]
 
     matched_experience_keywords: list[str]
     missing_experience_keywords: list[str]
@@ -43,9 +42,14 @@ class ResumeAnalysisResponse(BaseModel):
     matched_project_keywords: list[str]
     missing_project_keywords: list[str]
 
+    matched_education_keywords: list[str]
+    missing_education_keywords: list[str]
+
+    matched_certification_keywords: list[str]
+    missing_certification_keywords: list[str]
+
     strengths: list[str]
     weaknesses: list[str]
-
     suggestions: list[str]
 
 class ResumeOptimizationRequest(BaseModel):
