@@ -4,6 +4,9 @@ from app.config import GROQ_API_KEY
 
 client = Groq(api_key=GROQ_API_KEY)
 
+from app.services.text_utils import (
+    extract_keywords
+)
 
 def generate_resume(
     name: str,
@@ -132,43 +135,14 @@ def analyze_resume_keywords(
     resume: str,
     job_description: str
 ):
-    resume_words = set(
-        re.findall(r"\b\w+\b", resume.lower())
-    )
+   
+    resume_words = extract_keywords(
+            resume
+        )
 
-    jd_words = set(
-        re.findall(r"\b\w+\b", job_description.lower())
-    )
-
-    stop_words = {
-    "a", "an", "the", "and", "or", "but",
-    "is", "are", "was", "were",
-    "to", "of", "in", "on", "for",
-    "with", "at", "by", "from",
-    "have", "has", "had",
-    "be", "been", "being"
-
-    # ATS noise words
-    "we", "our", "you", "your", "looking",
-    "required", "preferred", "responsibilities",
-    "responsibility", "include", "includes",
-    "including", "skills", "skill",
-    "experience", "job", "role",
-    "candidate", "candidates", "work",
-    "working", "team", "ability",
-
-    # Generic resume words
-    "professional", "summary",
-    "education", "projects",
-    "project",
-
-    # Generic tech hiring words
-    "software", "engineer",
-    "engineering", "developer",
-    "development"
-}
-    resume_words = resume_words - stop_words
-    jd_words = jd_words - stop_words
+    jd_words = extract_keywords(
+            job_description
+        )
 
     matched_keywords = sorted(
         list(resume_words & jd_words)

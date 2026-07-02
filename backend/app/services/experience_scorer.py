@@ -1,5 +1,9 @@
 import re
 
+from app.services.text_utils import (
+    extract_keywords
+)
+
 def extract_experience_section(
     resume: str
 ):
@@ -40,56 +44,19 @@ def calculate_experience_score(
     job_description: str
 ):
     
-    stop_words = {
-    "a", "an", "the", "and", "or", "but",
-    "is", "are", "was", "were",
-    "to", "of", "in", "on", "for",
-    "with", "at", "by", "from",
-    "have", "has", "had",
-    "be", "been", "being",
-
-    # ATS noise words
-    "we", "our", "you", "your", "looking",
-    "required", "preferred", "responsibilities",
-    "responsibility", "include", "includes",
-    "including", "skills", "skill",
-    "experience", "job", "role",
-    "candidate", "candidates", "work",
-    "working", "team", "ability",
-
-    # Generic resume words
-    "professional", "summary",
-    "education", "projects",
-    "project",
-
-    # Generic tech hiring words
-    "software", "engineer",
-    "engineering", "developer",
-    "development",
-    }
     experience_text = (
         extract_experience_section(
             resume
         ) 
     )
 
-    experience_words = {
-        word
-        for word in re.findall(
-            r"\b\w+\b",
-            experience_text.lower()
-        )
-        if word not in stop_words
-    }
+    experience_words = extract_keywords(
+        experience_text
+    )
     
-    jd_words = {
-        word
-        for word in re.findall(
-            r"\b\w+\b",
-            job_description.lower()
-        )
-        if word not in stop_words
-    }
+    jd_words = extract_keywords(
+        job_description
+    )
     
     matched_experience_keywords = list(
         experience_words.intersection(

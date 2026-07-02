@@ -1,5 +1,7 @@
 import re
 
+from app.services.text_utils import extract_keywords
+
 def extract_education_section(
     resume: str
 ):
@@ -43,41 +45,18 @@ def calculate_education_score(
     resume: str,
     job_description: str
 ):
-    stop_words = {
-        "a", "an", "the", "and", "or", "but",
-        "is", "are", "was", "were",
-        "to", "of", "in", "on", "for",
-        "with", "at", "by", "from",
-        "have", "has", "had",
-        "be", "been", "being",
-        "we", "our", "you", "your",
-        "looking", "required", "preferred",
-        "experience", "job", "role",
-        "candidate", "candidates",
-        "education"
-    }
 
     education_text = extract_education_section(
         resume
     )
 
-    education_words = {
-        word
-        for word in re.findall(
-            r"\b\w+\b",
-            education_text.lower()
-        )
-        if word not in stop_words
-    }
+    education_words = extract_keywords(
+        education_text
+    )
 
-    jd_words = {
-        word
-        for word in re.findall(
-            r"\b\w+\b",
-            job_description.lower()
-        )
-        if word not in stop_words
-    }
+    jd_words = extract_keywords(
+        job_description
+    )
 
     matched_education_keywords = list(
         education_words.intersection(
