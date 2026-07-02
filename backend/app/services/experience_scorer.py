@@ -1,5 +1,7 @@
 import re
 
+from app.services.section_extractor import extract_section
+
 from app.services.text_utils import (
     extract_keywords
 )
@@ -44,10 +46,9 @@ def calculate_experience_score(
     job_description: str
 ):
     
-    experience_text = (
-        extract_experience_section(
-            resume
-        ) 
+    experience_text = extract_section(
+        resume,
+        "experience"
     )
 
     experience_words = extract_keywords(

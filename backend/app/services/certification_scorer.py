@@ -1,5 +1,6 @@
 import re
 from app.services.text_utils import extract_keywords
+from app.services.section_extractor import extract_section
 
 def extract_certifications_section(
     resume: str
@@ -49,10 +50,9 @@ def calculate_certification_score(
     job_description: str
 ):
 
-    certification_text = (
-        extract_certifications_section(
-            resume
-        )
+    certification_text = extract_section(
+        resume,
+        "certifications"
     )
 
     certification_words = extract_keywords(

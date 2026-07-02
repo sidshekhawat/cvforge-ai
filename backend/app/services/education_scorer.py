@@ -2,6 +2,10 @@ import re
 
 from app.services.text_utils import extract_keywords
 
+from app.services.section_extractor import (
+    extract_section
+)
+
 def extract_education_section(
     resume: str
 ):
@@ -46,8 +50,9 @@ def calculate_education_score(
     job_description: str
 ):
 
-    education_text = extract_education_section(
-        resume
+    education_text = extract_section(
+        resume,
+        "education"
     )
 
     education_words = extract_keywords(

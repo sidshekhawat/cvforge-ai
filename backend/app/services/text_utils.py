@@ -18,6 +18,7 @@ STOP_WORDS = {
     "work", "working", "team",
 
     "professional", "summary",
+    "technology","technologies",
 
     "skills", "skill",
     "education","knowledge",
