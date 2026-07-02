@@ -26,6 +26,14 @@ STOP_WORDS = {
     "projects", "project",
     "certifications", "certification",
     "understanding","familiarity",
+    "developer","year",
+    "developers","backend",
+    "frontend","engineer",
+    "engineers","candidate",
+    "candidates","role",
+    "position","looking",
+    "experience","years",
+    "required","preferred",
 }
 
 def extract_keywords(

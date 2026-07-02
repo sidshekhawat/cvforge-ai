@@ -10,6 +10,8 @@ from app.api.parser import (
     router as parser_router
 )
 
+from app.api.skill_gap import router as skill_gap_router
+
 app = FastAPI(
     title="CVForge AI API",
     description="Backend API for CVForge AI",
@@ -22,7 +24,9 @@ app.include_router(ai_router)
 app.include_router(
     parser_router
 )
-
+app.include_router(
+    skill_gap_router
+)
 
 @app.get("/")
 def root():

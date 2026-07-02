@@ -8,6 +8,8 @@ from app.schemas.resume_parser import (
     ParsedResume
 )
 
+from app.services.skills import SKILL_KEYWORDS
+
 def extract_email(
     resume_text: str
 ):
@@ -71,27 +73,6 @@ def parse_resume(
         "certifications"
     )
 )
-
-SKILL_KEYWORDS = {
-    "python",
-    "fastapi",
-    "postgresql",
-    "docker",
-    "git",
-    "github",
-    "aws",
-    "streamlit",
-    "sql",
-    "javascript",
-    "typescript",
-    "react",
-    "nextjs",
-    "nodejs",
-    "mongodb",
-    "jwt",
-    "html",
-    "css"
-}
 
 from app.services.text_utils import (
     extract_keywords

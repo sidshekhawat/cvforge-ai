@@ -1,0 +1,21 @@
+SKILL_KEYWORDS = {
+    "python",
+    "fastapi",
+    "postgresql",
+    "docker",
+    "git",
+    "github",
+    "aws",
+    "streamlit",
+    "sql",
+    "javascript",
+    "typescript",
+    "react",
+    "nextjs",
+    "nodejs",
+    "mongodb",
+    "jwt",
+    "html",
+    "css",
+    "kubernetes"
+}

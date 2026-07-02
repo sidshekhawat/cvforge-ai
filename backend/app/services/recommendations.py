@@ -1,0 +1,20 @@
+SKILL_RECOMMENDATIONS = {
+    "python": "Practice Python DSA problems and build backend projects",
+    "fastapi": "Build REST APIs using FastAPI and JWT authentication",
+    "postgresql": "Learn database design and advanced SQL queries",
+    "docker": "Build and deploy a Dockerized FastAPI project",
+    "aws": "Earn the AWS Cloud Practitioner certification",
+    "kubernetes": "Learn Kubernetes deployments, services and scaling",
+    "git": "Practice Git branching, merging and pull requests",
+    "github": "Create and maintain production-quality GitHub repositories",
+    "streamlit": "Build interactive AI dashboards with Streamlit",
+    "react": "Build a React frontend project",
+    "nextjs": "Build a full-stack Next.js application",
+    "javascript": "Master ES6+, DOM manipulation and async programming",
+    "typescript": "Learn type-safe frontend and backend development",
+    "mongodb": "Practice schema design and aggregation pipelines",
+    "sql": "Master joins, indexing and query optimization",
+    "html": "Build responsive web pages",
+    "css": "Learn Flexbox, Grid and responsive design",
+    "nodejs": "Build backend APIs using Node.js and Express"
+}
