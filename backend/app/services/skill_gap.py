@@ -4,6 +4,26 @@ from app.services.skills import SKILL_KEYWORDS
 from app.services.recommendations import (
     SKILL_RECOMMENDATIONS
 )
+from app.services.experience_scorer import (
+    calculate_experience_score
+)
+from app.services.project_scorer import (
+    calculate_project_score
+)
+from app.services.education_scorer import (
+    calculate_education_score
+)
+from app.services.certification_scorer import (
+    calculate_certification_score
+)
+WEIGHTS = {
+    "skills": 40,
+    "experience": 25,
+    "projects": 15,
+    "education": 10,
+    "certifications": 10
+}
+
 def analyze_skill_gap(
     resume_text: str,
     job_description: str
@@ -46,9 +66,55 @@ def analyze_skill_gap(
         for skill in missing_skills
     ]
 
+    skills_match = match_percentage
+    experience_match, _, _ = (
+        calculate_experience_score(
+            resume_text,
+            job_description
+        )
+    )
+    project_match, _, _ = (
+        calculate_project_score(
+            resume_text,
+            job_description
+        )
+    )
+    education_match, _, _ = (
+        calculate_education_score(
+            resume_text,
+            job_description
+        )
+    )
+    certification_match, _, _ = (
+        calculate_certification_score(
+            resume_text,
+            job_description
+        )
+    )
+
+    overall_match = round(
+        (
+            skills_match * WEIGHTS["skills"]
+            + experience_match * WEIGHTS["experience"]
+            + project_match * WEIGHTS["projects"]
+            + education_match * WEIGHTS["education"]
+            + certification_match * WEIGHTS["certifications"]
+        )
+        / 100,
+        2
+    )
+
     return SkillGapResponse(
-        match_percentage=match_percentage,
+        overall_match=overall_match,
+
+        skills_match=skills_match,
+        experience_match=experience_match,
+        project_match=project_match,
+        education_match=education_match,
+        certification_match=certification_match,
+
         matched_skills=matched_skills,
         missing_skills=missing_skills,
+
         recommendations=recommendations
     )
