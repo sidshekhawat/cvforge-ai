@@ -16,6 +16,12 @@ from app.services.education_scorer import (
 from app.services.certification_scorer import (
     calculate_certification_score
 )
+from app.services.improvement_suggestions import (
+    generate_improvement_suggestions
+)
+from app.services.improvement_report import (
+    generate_improvement_report
+)
 WEIGHTS = {
     "skills": 40,
     "experience": 25,
@@ -180,9 +186,57 @@ def analyze_skill_gap(
         f"{overall_match}%."
     )
 
+    """improvement_suggestions = []
+    for skill in missing_skills:
+        improvement_suggestions.append(
+            f"Add or develop {skill} skills to improve ATS matching"
+        )
+    if education_match < 60:
+        improvement_suggestions.append(
+            "Improve education section relevance"
+        )
+
+    if certification_match < 60:
+        improvement_suggestions.append(
+            "Add relevant certifications"
+        )
+
+    if project_match < 60:
+        improvement_suggestions.append(
+            "Include more relevant projects"
+        )
+
+    if experience_match < 60:
+        improvement_suggestions.append(
+            "Highlight more relevant work experience"
+        )"""
+    
+    improvement_suggestions = (
+        generate_improvement_suggestions(
+            missing_skills=missing_skills,
+            skills_match=skills_match,
+            experience_match=experience_match,
+            project_match=project_match,
+            education_match=education_match,
+            certification_match=certification_match,
+        )
+    )
+
+    improvement_report = (
+        generate_improvement_report(
+            overall_match=overall_match,
+            verdict=verdict,
+            strengths=strengths,
+            weaknesses=weaknesses,
+            missing_skills=missing_skills,
+        )
+    )
+
     return SkillGapResponse(
         overall_match=overall_match,
         analysis_summary=analysis_summary,
+        improvement_suggestions=improvement_suggestions,
+        improvement_report=improvement_report,
 
         verdict=verdict,
         strengths=strengths,

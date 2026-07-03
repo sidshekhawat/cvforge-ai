@@ -4,6 +4,7 @@ class SkillGapResponse(BaseModel):
     overall_match: float
     verdict: str
     analysis_summary: str
+    improvement_report: str
 
     strengths: list[str]
     weaknesses: list[str]
@@ -18,3 +19,4 @@ class SkillGapResponse(BaseModel):
     missing_skills: list[str]
 
     recommendations: list[str]
+    improvement_suggestions: list[str]
