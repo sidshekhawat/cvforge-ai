@@ -12,10 +12,19 @@ from app.api.parser import (
 
 from app.api.skill_gap import router as skill_gap_router
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI(
     title="CVForge AI API",
     description="Backend API for CVForge AI",
     version="1.0.0",
+)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(auth_router)
