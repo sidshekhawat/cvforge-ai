@@ -104,9 +104,90 @@ def analyze_skill_gap(
         2
     )
 
+    verdict = ""
+    if overall_match >= 90:
+        verdict = "Excellent Match"
+
+    elif overall_match >= 75:
+        verdict = "Strong Match"
+
+    elif overall_match >= 60:
+        verdict = "Good Match"
+
+    elif overall_match >= 40:
+        verdict = "Moderate Match"
+
+    else:
+        verdict = "Weak Match"
+
+
+    strengths = []
+    if skills_match >= 80:
+        strengths.append(
+            "Excellent skill alignment"
+        )
+
+    if experience_match >= 70:
+        strengths.append(
+            "Strong experience relevance"
+        )
+
+    if project_match >= 70:
+        strengths.append(
+            "Strong project relevance"
+        )
+
+    if education_match >= 70:
+        strengths.append(
+            "Strong educational alignment"
+        )
+
+    if certification_match >= 70:
+        strengths.append(
+            "Strong certification coverage"
+        )
+
+
+    weaknesses = []
+    if skills_match < 60:
+        weaknesses.append(
+            "Skill alignment needs improvement"
+        )
+
+    if experience_match < 60:
+        weaknesses.append(
+            "Experience relevance is limited"
+        )
+
+    if project_match < 60:
+        weaknesses.append(
+            "Project relevance could be improved"
+        )
+
+    if education_match < 60:
+        weaknesses.append(
+            "Educational alignment is below expectations"
+        )
+
+    if certification_match < 60:
+        weaknesses.append(
+            "Certification coverage is limited"
+        )
+
+    analysis_summary = (
+        f"This resume is a {verdict.lower()} "
+        f"with an overall match score of "
+        f"{overall_match}%."
+    )
+
     return SkillGapResponse(
         overall_match=overall_match,
+        analysis_summary=analysis_summary,
 
+        verdict=verdict,
+        strengths=strengths,
+        weaknesses=weaknesses,
+    
         skills_match=skills_match,
         experience_match=experience_match,
         project_match=project_match,
