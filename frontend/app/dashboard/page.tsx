@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import ATSScoreCard from "@/src/components/ats/ATSScoreCard";
 import SectionScores from "@/src/components/ats/SectionScores";
 import StrengthsCard from "@/src/components/ats/StrengthsCard";
@@ -15,6 +16,8 @@ import {
 
 export default function DashboardPage() {
 
+    const router = useRouter();
+
     const [analysis, setAnalysis] =
     useState<ATSAnalysis | null>(null);
 
@@ -23,6 +26,23 @@ export default function DashboardPage() {
 
     const [resume, setResume] = useState("");
     const [jobDescription, setJobDescription] = useState("");
+
+    useEffect(() => {
+        const token =
+            localStorage.getItem("access_token");
+
+        if (!token) {
+            router.push("/login");
+        }
+    }, [router]);
+
+    function logout() {
+        localStorage.removeItem(
+            "access_token"
+        );
+
+        window.location.href = "/login";
+    }
 
     async function runAnalysis() {
 
@@ -65,15 +85,27 @@ export default function DashboardPage() {
   return (
     <main className="mx-auto max-w-6xl bg-gray-100 p-8 min-h-screen">
 
-        <div className="mb-8">
-        <h1 className="text-lg font-semibold text-gray-900">
-            ATS Analysis Dashboard
-        </h1>
+        <div className="mb-8 flex items-center justify-between">
 
-        <p className="leading-relaxed text-gray-700">
-            Resume evaluation and career coaching insights.
-        </p>
+            <div>
+                <h1 className="text-lg font-semibold text-gray-900">
+                    ATS Analysis Dashboard
+                </h1>
+
+                <p className="leading-relaxed text-gray-700">
+                    Resume evaluation and career coaching insights.
+                </p>
+            </div>
+
+            <button
+                onClick={logout}
+                className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+            >
+                Logout
+            </button>
+
         </div>
+
         <div className="mb-6 space-y-4">
             <textarea
                 value={resume}
