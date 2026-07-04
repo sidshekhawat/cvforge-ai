@@ -59,6 +59,7 @@ from app.services.education_scorer import (
 from app.services.certification_scorer import (
     calculate_certification_score
 )
+from app.models.ats_analysis import ATSAnalysis
 @router.post(
 
     "/generate",
@@ -106,6 +107,7 @@ def generate_and_save_resume(
 
     db.add(resume)
     db.commit()
+    print("=== ATS ANALYSIS SAVED ===")
     db.refresh(resume)
 
     return resume
@@ -115,7 +117,9 @@ def generate_and_save_resume(
     response_model=ResumeAnalysisResponse
 )
 def analyze_resume(
-    data: ResumeAnalysisRequest
+    data: ResumeAnalysisRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
     matched_keywords, missing_keywords = (
         analyze_resume_keywords(
@@ -176,6 +180,22 @@ def analyze_resume(
         skills_score,
         weaknesses
     )
+
+    analysis = ATSAnalysis(
+    user_id=current_user.id,
+    resume_text=data.resume,
+    job_description=data.job_description,
+    ats_score=ats_score,
+    analysis_feedback="\n".join(suggestions)
+    )
+    print("=== SAVING ATS ANALYSIS ===")
+    print("USER:", current_user.id)
+    print("ATS SCORE:", ats_score)
+    db.add(analysis)
+    db.commit()
+    print("=== ATS ANALYSIS SAVED ===")
+    db.refresh(analysis)
+
     return {
         "ats_score": ats_score,
         "experience_score": experience_score,
