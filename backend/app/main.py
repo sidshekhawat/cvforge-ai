@@ -14,6 +14,12 @@ from app.api.skill_gap import router as skill_gap_router
 
 from fastapi.middleware.cors import CORSMiddleware
 
+from fastapi import UploadFile, File
+from app.services.file_parser import (
+    extract_text_from_pdf,
+    extract_text_from_docx,
+)
+
 app = FastAPI(
     title="CVForge AI API",
     description="Backend API for CVForge AI",
@@ -40,3 +46,30 @@ app.include_router(
 @app.get("/")
 def root():
     return {"message": "Welcome to CVForge AI"}
+
+@app.post("/upload-resume/")
+async def upload_resume(
+    file: UploadFile = File(...)
+):
+    file_bytes = await file.read()
+
+    filename = file.filename.lower()
+
+    if filename.endswith(".pdf"):
+        text = extract_text_from_pdf(
+            file_bytes
+        )
+
+    elif filename.endswith(".docx"):
+        text = extract_text_from_docx(
+            file_bytes
+        )
+
+    else:
+        return {
+            "error": "Unsupported file format"
+        }
+
+    return {
+        "text": text
+    }

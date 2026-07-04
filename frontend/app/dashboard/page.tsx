@@ -8,7 +8,10 @@ import MissingSkillsCard from "@/src/components/ats/MissingSkillsCard";
 import RecommendationsCard from "@/src/components/ats/RecommendationsCard";
 import ImprovementReportCard from "@/src/components/ats/ImprovementReportCard";
 import { ATSAnalysis } from "@/src/types/ats";
-import { analyzeResume } from "@/src/services/api";
+import {
+  analyzeResume,
+  uploadResume,
+} from "@/src/services/api";
 
 export default function DashboardPage() {
 
@@ -42,7 +45,23 @@ export default function DashboardPage() {
                 setLoading(false);
             }
             }
+    async function handleResumeUpload(
+        event: React.ChangeEvent<HTMLInputElement>
+        ) {
+        const file = event.target.files?.[0];
 
+        if (!file) return;
+
+        try {
+            const extractedText =
+            await uploadResume(file);
+
+            setResume(extractedText);
+        } catch (error) {
+            console.error(error);
+            alert("Failed to upload resume.");
+        }
+        }
   return (
     <main className="mx-auto max-w-6xl bg-gray-100 p-8 min-h-screen">
 
@@ -63,6 +82,16 @@ export default function DashboardPage() {
                 className="w-full rounded-lg border p-3 text-gray-900"
                 rows={8}
             />
+
+
+        <div className="mb-4">
+            <input
+                type="file"
+                accept=".pdf,.docx"
+                onChange={handleResumeUpload}
+                className="block w-full text-sm text-gray-700"
+            />
+        </div>
 
             <textarea
                 value={jobDescription}
