@@ -15,6 +15,33 @@ import {
   getAnalysisHistory,
 } from "@/src/services/api";
 
+function getATSVerdict(score: number) {
+  if (score >= 90) {
+    return {
+      label: "Excellent Match",
+      color: "text-green-600",
+    };
+  }
+
+  if (score >= 75) {
+    return {
+      label: "Strong Match",
+      color: "text-blue-600",
+    };
+  }
+
+  if (score >= 60) {
+    return {
+      label: "Moderate Match",
+      color: "text-yellow-600",
+    };
+  }
+
+  return {
+    label: "Weak Match",
+    color: "text-red-600",
+  };
+}
 
 export default function DashboardPage() {
 
@@ -44,7 +71,7 @@ export default function DashboardPage() {
         job_description: string;
         created_at: string;
     };
-
+    
     const [history, setHistory] = useState<AnalysisHistory[]>([]);
 
     useEffect(() => {
@@ -105,7 +132,7 @@ export default function DashboardPage() {
             alert("Failed to upload resume.");
         }
         }
-  return (
+return (
     <main className="mx-auto max-w-6xl bg-gray-100 p-8 min-h-screen">
 
         <div className="mb-8 flex items-center justify-between">
@@ -182,131 +209,145 @@ export default function DashboardPage() {
                 Analysis History
             </h2>
 
-            {history.map((item) => (
-                <div
-                key={item.id}
-                className="mt-3 rounded border bg-white p-4 shadow"
-                >
-                <div className="flex items-center justify-between">
-                <p className="text-lg font-semibold text-gray-900">
-                    ATS Analysis
-                </p>
+        {history.map((item) => (
+            <div
+            key={item.id}
+            className="mt-3 rounded border bg-white p-4 shadow"
+            >
+            <div className="flex items-center justify-between">
+            <p className="text-lg font-semibold text-gray-900">
+                ATS Analysis
+            </p>
 
-                <span
-                    className={`rounded-full px-3 py-1 text-sm font-semibold text-white ${
+            <span
+                className={`rounded-full px-3 py-1 text-sm font-semibold text-white ${
+                item.ats_score >= 90
+                    ? "bg-green-500"
+                    : item.ats_score >= 75
+                    ? "bg-blue-500"
+                    : item.ats_score >= 60
+                    ? "bg-yellow-500"
+                    : "bg-red-500"
+                }`}
+            >
+                {item.ats_score}
+            </span>
+            </div>
+
+            <span
+                className={`mt-2 inline-block rounded-full px-3 py-1 text-sm font-semibold ${
                     item.ats_score >= 90
-                        ? "bg-green-500"
-                        : item.ats_score >= 75
-                        ? "bg-blue-500"
-                        : item.ats_score >= 60
-                        ? "bg-yellow-500"
-                        : "bg-red-500"
-                    }`}
+                    ? "bg-green-100 text-green-700"
+                    : item.ats_score >= 75
+                    ? "bg-blue-100 text-blue-700"
+                    : item.ats_score >= 60
+                    ? "bg-yellow-100 text-yellow-700"
+                    : "bg-red-100 text-red-700"
+                }`}
                 >
-                    {item.ats_score}
+                {getATSVerdict(item.ats_score).label}
                 </span>
-                </div>
 
-                <p className="mt-1 text-sm text-gray-500">
-                    {new Date(
-                    item.created_at
-                    ).toLocaleString()}
-                </p>
+            <p className="mt-1 text-sm text-gray-500">
+                {new Date(
+                item.created_at
+                ).toLocaleString()}
+            </p>
 
-                <button
-                onClick={() =>
-                    setExpandedAnalysisId(
-                    expandedAnalysisId === item.id
-                        ? null
-                        : item.id
-                    )
-                }
-                className="mt-3 rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
-                >
-                {expandedAnalysisId === item.id
-                    ? "Hide Report"
-                    : "View Full Report"}
-                </button>
+            <button
+            onClick={() =>
+                setExpandedAnalysisId(
+                expandedAnalysisId === item.id
+                    ? null
+                    : item.id
+                )
+            }
+            className="mt-3 rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
+            >
+            {expandedAnalysisId === item.id
+                ? "Hide Report"
+                : "View Full Report"}
+            </button>
 
-                {expandedAnalysisId === item.id && (
-                <div className="mt-4 rounded-lg border bg-gray-50 p-4">
-                    <h3 className="font-semibold text-gray-900">
-                    Feedback
-                    </h3>
-
-                <div className="mt-4 rounded-lg border bg-white p-4 shadow-sm">
+            {expandedAnalysisId === item.id && (
+            <div className="mt-4 rounded-lg border bg-gray-50 p-4">
                 <h3 className="font-semibold text-gray-900">
-                    ATS Score Breakdown
+                Feedback
                 </h3>
 
-                <div className="mt-4 grid grid-cols-2 gap-4">
+            <div className="mt-4 rounded-lg border bg-white p-4 shadow-sm">
+            <h3 className="font-semibold text-gray-900">
+                ATS Score Breakdown
+            </h3>
 
-                    <div className="rounded-lg bg-blue-50 p-3">
-                    <p className="text-sm text-gray-600">
-                        Keyword Match
-                    </p>
-                    <p className="text-2xl font-bold text-gray-900">
-                        {item.keyword_score ?? 0}
-                    </p>
-                    </div>
+            <div className="mt-4 grid grid-cols-2 gap-4">
 
-                    <div className="rounded-lg bg-green-50 p-3">
-                    <p className="text-sm text-gray-600">
-                        Structure
-                    </p>
-                    <p className="text-2xl font-bold text-gray-900">
-                        {item.structure_score ?? 0}
-                    </p>
-                    </div>
-
-                    <div className="rounded-lg bg-yellow-50 p-3">
-                    <p className="text-sm text-gray-600">
-                        Skills
-                    </p>
-                    <p className="text-2xl font-bold text-gray-900">
-                        {item.skills_score ?? 0}
-                    </p>
-                    </div>
-
-                    <div className="rounded-lg bg-purple-50 p-3">
-                    <p className="text-sm text-gray-600">
-                        AI Review
-                    </p>
-                    <p className="text-2xl font-bold text-gray-900">
-                        {item.ai_review_score ?? 0}
-                    </p>
-                    </div>
-
-                </div>
+                <div className="rounded-lg bg-blue-50 p-3">
+                <p className="text-sm text-gray-600">
+                    Keyword Match
+                </p>
+                <p className="text-2xl font-bold text-gray-900">
+                    {item.keyword_score ?? 0}
+                </p>
                 </div>
 
-                    <p className="mt-2 leading-relaxed text-gray-700">
-                    {item.analysis_feedback}
-                    </p>
-
-                    <div className="mt-6">
-                    <h3 className="font-semibold text-gray-900">
-                        Resume
-                    </h3>
-
-                    <div className="mt-2 max-h-64 overflow-y-auto rounded-lg border bg-white p-4 whitespace-pre-wrap text-gray-700 shadow-sm">
-                        {item.resume_text}
-                    </div>
-
-                    <div className="mt-6">
-                    <h3 className="font-semibold text-gray-900">
-                        Job Description
-                    </h3>
-                    <div className="mt-2 max-h-64 overflow-y-auto rounded-lg border bg-white p-4 whitespace-pre-wrap text-gray-700 shadow-sm">
-                        {item.job_description}
-                    </div>
-                    </div>
-                    </div>
+                <div className="rounded-lg bg-green-50 p-3">
+                <p className="text-sm text-gray-600">
+                    Structure
+                </p>
+                <p className="text-2xl font-bold text-gray-900">
+                    {item.structure_score ?? 0}
+                </p>
                 </div>
-                )}
+
+                <div className="rounded-lg bg-yellow-50 p-3">
+                <p className="text-sm text-gray-600">
+                    Skills
+                </p>
+                <p className="text-2xl font-bold text-gray-900">
+                    {item.skills_score ?? 0}
+                </p>
                 </div>
-            ))}
+
+                <div className="rounded-lg bg-purple-50 p-3">
+                <p className="text-sm text-gray-600">
+                    AI Review
+                </p>
+                <p className="text-2xl font-bold text-gray-900">
+                    {item.ai_review_score ?? 0}
+                </p>
+                </div>
+
             </div>
+            </div>
+
+                <p className="mt-2 leading-relaxed text-gray-700">
+                {item.analysis_feedback}
+                </p>
+
+                <div className="mt-6">
+                <h3 className="font-semibold text-gray-900">
+                Resume
+                </h3>
+
+                <div className="mt-2 max-h-64 overflow-y-auto rounded-lg border bg-white p-4 whitespace-pre-wrap text-gray-700 shadow-sm">
+                   {item.resume_text}
+                </div>
+
+                <div className="mt-6">
+                <h3 className="font-semibold text-gray-900">
+                    Job Description
+                </h3>
+                <div className="mt-2 max-h-64 overflow-y-auto rounded-lg border bg-white p-4 whitespace-pre-wrap text-gray-700 shadow-sm">
+                    {item.job_description}
+                </div>
+                </div>
+                </div>
+            </div>
+            )}
+            </div>
+        ))}
+        </div>
 
         {analysis && (
         <>
