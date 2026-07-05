@@ -14,6 +14,15 @@ import {
   uploadResume,
   getAnalysisHistory,
 } from "@/src/services/api";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 function getATSVerdict(score: number) {
   if (score >= 90) {
@@ -73,6 +82,41 @@ export default function DashboardPage() {
     };
     
     const [history, setHistory] = useState<AnalysisHistory[]>([]);
+
+    const totalAnalyses = history.length;
+
+    const bestScore =
+        history.length > 0
+            ? Math.max(...history.map(item => item.ats_score))
+            : 0;
+
+    const chartData = [...history]
+        .reverse()
+        .map((item, index) => ({
+            version: `V${index + 1}`,
+            score: item.ats_score,
+        }));
+
+    const latestScore =
+        history.length > 0
+            ? history[0].ats_score
+            : 0;
+
+    const averageScore =
+        history.length > 0
+            ? Math.round(
+                history.reduce(
+                    (sum, item) => sum + item.ats_score,
+                    0
+                ) / history.length
+            )
+            : 0;
+
+    const improvement =
+        history.length > 1
+            ? latestScore -
+            history[history.length - 1].ats_score
+            : 0;
 
     useEffect(() => {
         const token =
@@ -203,6 +247,127 @@ return (
                 </p>
             </div>
             )}
+
+        <div className="mb-8 rounded-lg border bg-white p-6 shadow">
+            <h2 className="mb-6 text-2xl font-bold text-gray-900">
+                ATS Analytics
+            </h2>
+
+            <div className="grid grid-cols-2 gap-4">
+
+                <div className="rounded-lg bg-blue-50 p-4">
+                    <p className="text-sm text-gray-600">
+                        Best ATS Score
+                    </p>
+                    <p className="text-3xl font-bold text-gray-900">
+                        {bestScore}
+                    </p>
+                </div>
+
+                <div className="rounded-lg bg-green-50 p-4">
+                    <p className="text-sm text-gray-600">
+                        Latest ATS Score
+                    </p>
+                    <p className="text-3xl font-bold text-gray-900">
+                        {latestScore}
+                    </p>
+                </div>
+
+                <div className="rounded-lg bg-yellow-50 p-4">
+                    <p className="text-sm text-gray-600">
+                        Average ATS Score
+                    </p>
+                    <p className="text-3xl font-bold text-gray-900">
+                        {averageScore}
+                    </p>
+                </div>
+
+                <div className="rounded-lg bg-purple-50 p-4">
+                    <p className="text-sm text-gray-600">
+                        Total Analyses
+                    </p>
+                    <p className="text-3xl font-bold text-gray-900">
+                        {totalAnalyses}
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <div className="mt-4 rounded-lg bg-gray-50 p-4">
+            <p className="text-sm text-gray-600">
+                Overall Improvement
+            </p>
+
+            <p
+                className={`text-3xl font-bold ${
+                    improvement >= 0
+                        ? "text-green-600"
+                        : "text-red-600"
+                }`}
+            >
+                {improvement >= 0 ? "+" : ""}
+                {improvement}
+            </p>
+
+            <p className="text-sm text-gray-500">
+                Compared to your first resume version
+            </p>
+        </div>
+
+        <div className="mt-6 rounded-lg border bg-white p-6 shadow">
+            <h2 className="mb-4 text-2xl font-bold text-gray-900">
+                ATS Score Progress
+            </h2>
+
+            <div className="h-72">
+                <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+
+                    <XAxis dataKey="version" />
+
+                    <YAxis
+                    domain={[
+                        (dataMin: number) => dataMin - 5,
+                        (dataMax: number) => dataMax + 5,
+                    ]}
+                    />
+
+                    <Tooltip />
+
+                    <Line
+                    type="monotone"
+                    dataKey="score"
+                    strokeWidth={3}
+                    dot={{ r: 5 }}
+                    />
+                </LineChart>
+                </ResponsiveContainer>
+            </div>
+            </div>
+        
+        <div className="mt-4 rounded-lg border bg-white p-4">
+            <p className="text-sm text-gray-600">
+                Current ATS Verdict
+            </p>
+
+            <div className="mt-2">
+            <span
+                className={`inline-block rounded-full px-4 py-2 text-sm font-semibold ${
+                latestScore >= 90
+                    ? "bg-green-100 text-green-700"
+                    : latestScore >= 75
+                    ? "bg-blue-100 text-blue-700"
+                    : latestScore >= 60
+                    ? "bg-yellow-100 text-yellow-700"
+                    : "bg-red-100 text-red-700"
+                }`}
+            >
+                {getATSVerdict(latestScore).label}
+            </span>
+            </div>
+            </div>
 
         <div className="mt-8">
             <h2 className="text-lg font-semibold text-gray-900">
