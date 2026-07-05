@@ -209,15 +209,36 @@ return (
                 Analysis History
             </h2>
 
-        {history.map((item) => (
+        {history.map((item, index) => {
+            const versionNumber = history.length - index;
+
+            const previousScore =
+                history[index + 1]?.ats_score;
+
+            const scoreDifference =
+                previousScore !== undefined
+                    ? item.ats_score - previousScore
+                    : null;
+
+            const isLatest = index === 0;
+
+            return (
             <div
             key={item.id}
             className="mt-3 rounded border bg-white p-4 shadow"
             >
             <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
             <p className="text-lg font-semibold text-gray-900">
-                ATS Analysis
+                Resume Version {versionNumber}
             </p>
+
+            {isLatest && (
+                <span className="rounded-full bg-green-100 px-2 py-1 text-xs font-semibold text-green-700">
+                    Latest
+                </span>
+            )}
+        </div>
 
             <span
                 className={`rounded-full px-3 py-1 text-sm font-semibold text-white ${
@@ -248,10 +269,24 @@ return (
                 {getATSVerdict(item.ats_score).label}
                 </span>
 
+                {scoreDifference !== null && scoreDifference !== 0 && (
+                    <p
+                        className={`mt-2 text-sm font-medium ${
+                            scoreDifference >= 0
+                                ? "text-green-600"
+                                : "text-red-600"
+                        }`}
+                    >
+                        {scoreDifference >= 0 ? "▲" : "▼"}{" "}
+                        {Math.abs(scoreDifference)} ATS points
+                        from previous version
+                    </p>
+                )}
+
             <p className="mt-1 text-sm text-gray-500">
                 {new Date(
                 item.created_at
-                ).toLocaleString()}
+                ).toLocaleDateString()}
             </p>
 
             <button
@@ -346,7 +381,8 @@ return (
             </div>
             )}
             </div>
-        ))}
+        );
+})}
         </div>
 
         {analysis && (
