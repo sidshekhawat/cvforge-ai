@@ -21,6 +21,14 @@ class ATSAnalysis(Base):
 
     ats_score = Column(Integer, nullable=False)
 
+    keyword_score = Column(Integer, nullable=True)
+
+    structure_score = Column(Integer, nullable=True)
+
+    skills_score = Column(Integer, nullable=True)
+
+    ai_review_score = Column(Integer, nullable=True)
+
     analysis_feedback = Column(Text)
 
     created_at = Column(

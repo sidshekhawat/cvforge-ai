@@ -33,12 +33,19 @@ def skill_gap_analysis(
     )
 
     analysis = ATSAnalysis(
-        user_id=current_user.id,
-        resume_text=request.resume,
-        job_description=request.job_description,
-        ats_score=int(result.overall_match),
-        analysis_feedback=result.improvement_report
-    )
+    user_id=current_user.id,
+    resume_text=request.resume,
+    job_description=request.job_description,
+    ats_score=int(result.overall_match),
+    keyword_score=len(result.matched_skills),
+    structure_score=int(result.experience_match),
+    skills_score=int(result.skills_match),
+    ai_review_score=max(
+        0,
+        10 - len(result.weaknesses)
+    ),
+    analysis_feedback=result.improvement_report
+)
 
     db.add(analysis)
     db.commit()

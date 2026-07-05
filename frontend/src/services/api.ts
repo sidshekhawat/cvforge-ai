@@ -55,3 +55,26 @@ export async function uploadResume(
 
   return data.text;
 }
+
+export async function getAnalysisHistory() {
+  const token = localStorage.getItem(
+    "access_token"
+  );
+
+  const response = await fetch(
+    `${API_BASE_URL}/ai/analysis-history`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      "Failed to fetch analysis history"
+    );
+  }
+
+  return response.json();
+}

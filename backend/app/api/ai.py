@@ -45,6 +45,9 @@ from app.services.pdf_service import (
 from app.schemas.ai import (
     ResumePDFRequest
 )
+from app.schemas.ats_analysis import (
+    ATSAnalysisResponse
+)
 
 from app.services.experience_scorer import (
     calculate_experience_score
@@ -63,7 +66,6 @@ from app.models.ats_analysis import ATSAnalysis
 @router.post(
 
     "/generate",
-
     response_model=ResumeGenerationResponse
 )
 def generate_resume_api(
@@ -182,11 +184,18 @@ def analyze_resume(
     )
 
     analysis = ATSAnalysis(
-    user_id=current_user.id,
-    resume_text=data.resume,
-    job_description=data.job_description,
-    ats_score=ats_score,
-    analysis_feedback="\n".join(suggestions)
+        user_id=current_user.id,
+        resume_text=data.resume,
+        job_description=data.job_description,
+        ats_score=ats_score,
+        keyword_score=len(matched_keywords),
+        structure_score=structure_score,
+        skills_score=skills_score,
+        ai_review_score=max(
+            0,
+            10 - len(weaknesses)
+        ),
+        analysis_feedback="\n".join(suggestions)
     )
     print("=== SAVING ATS ANALYSIS ===")
     print("USER:", current_user.id)
@@ -271,3 +280,24 @@ def generate_cover_letter_endpoint(
     return {
         "cover_letter": cover_letter
     }
+
+@router.get(
+    "/analysis-history",
+    response_model=list[ATSAnalysisResponse]
+)
+def get_analysis_history(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    analyses = (
+        db.query(ATSAnalysis)
+        .filter(
+            ATSAnalysis.user_id == current_user.id
+        )
+        .order_by(
+            ATSAnalysis.created_at.desc()
+        )
+        .all()
+    )
+
+    return analyses
