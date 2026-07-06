@@ -8,7 +8,9 @@ from app.schemas.ai import (
     ResumeOptimizationRequest,
     ResumeOptimizationResponse,
     CoverLetterRequest,
-    CoverLetterResponse
+    CoverLetterResponse,
+    ImprovementRoadmapRequest,
+    ImprovementRoadmapResponse
 )
 
 from app.services.ai_services import generate_resume
@@ -61,6 +63,9 @@ from app.services.education_scorer import (
 )
 from app.services.certification_scorer import (
     calculate_certification_score
+)
+from app.services.improvement_roadmap import (
+    generate_improvement_roadmap
 )
 from app.models.ats_analysis import ATSAnalysis
 @router.post(
@@ -225,6 +230,35 @@ def analyze_resume(
         "weaknesses": weaknesses,
         "suggestions": suggestions
         }
+
+@router.post(
+    "/improvement-roadmap",
+    response_model=ImprovementRoadmapResponse
+)
+def improvement_roadmap_endpoint(
+    data: ImprovementRoadmapRequest
+):
+    matched_keywords, missing_keywords = (
+        analyze_resume_keywords(
+            data.resume,
+            data.job_description
+        )
+    )
+
+    review = review_resume(
+        data.resume,
+        data.job_description
+    )
+
+    strengths, weaknesses, suggestions = (
+        parse_review(review)
+    )
+
+    return generate_improvement_roadmap(
+        missing_keywords,
+        weaknesses,
+        suggestions
+    )
 
 @router.post(
     "/optimize-resume",

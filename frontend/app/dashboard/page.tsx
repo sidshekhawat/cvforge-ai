@@ -16,6 +16,7 @@ import {
   optimizeResume,
   generateCoverLetter,
   jobMatchAnalysis,
+  generateImprovementRoadmap
 } from "@/src/services/api";
 import {
   LineChart,
@@ -90,6 +91,31 @@ export default function DashboardPage() {
         const [jobMatchLoading,
             setJobMatchLoading] =
         useState(false);
+
+    type RoadmapItem = {
+    priority: string;
+    title: string;
+    impact: number;
+    };
+
+    type ImprovementRoadmap = {
+    estimated_score: number;
+    roadmap: RoadmapItem[];
+    };
+
+    const [
+    improvementRoadmap,
+    setImprovementRoadmap
+    ] =
+    useState<
+    ImprovementRoadmap | null
+    >(null);
+
+    const [
+    generatingRoadmap,
+    setGeneratingRoadmap
+    ] =
+useState(false);
 
     const [optimizing, setOptimizing] =
     useState(false);
@@ -231,6 +257,32 @@ export default function DashboardPage() {
             console.error(error);
             } finally {
             setJobMatchLoading(false);
+            }
+        };
+
+    const handleGenerateRoadmap =
+        async () => {
+            try {
+            setGeneratingRoadmap(
+                true
+            );
+
+            const result =
+                await generateImprovementRoadmap(
+                resume,
+                jobDescription
+                );
+
+            setImprovementRoadmap(
+                result
+            );
+
+            } catch (error) {
+            console.error(error);
+            } finally {
+            setGeneratingRoadmap(
+                false
+            );
             }
         };
 
@@ -652,6 +704,71 @@ return (
             )}
 
             </div>
+            
+        <div className="mt-8 rounded-lg border bg-white p-6 shadow">
+
+        <h2 className="mb-4 text-2xl font-bold text-gray-900">
+            Resume Improvement Roadmap
+        </h2>
+
+        <button
+            onClick={handleGenerateRoadmap}
+            disabled={generatingRoadmap}
+            className="rounded bg-green-600 px-4 py-2 text-white"
+        >
+            {generatingRoadmap
+            ? "Generating..."
+            : "Generate Roadmap"}
+        </button>
+
+        {improvementRoadmap && (
+            <div className="mt-6">
+
+            <div className="mt-6 space-y-4 text-gray-900">
+                <p className="font semibold text-gray-900">
+                Estimated ATS Gain
+                </p>
+
+                <p className="text-2xl font-bold text-green-600">
+                +{improvementRoadmap.estimated_score}
+                </p>
+            </div>
+
+            <div className="space-y-4">
+                {improvementRoadmap.roadmap.map(
+                (item, index) => (
+                    <div
+                    key={index}
+                    className="rounded-lg border p-4"
+                    >
+                    <div className="flex items-center justify-between">
+
+                        <span className="font-semibold text-gray-900">
+                        {item.title}
+                        </span>
+
+                        <span className="rounded bg-red-100 px-2 py-1 text-sm font-medium text-red-700">
+                        {item.priority}
+                        </span>
+
+                    </div>
+
+                    <p className="mt-2 text-sm text-gray-600">
+                        Impact:
+                        {" "}
+                        +{item.impact}
+                    </p>
+
+                    </div>
+                )
+                )}
+            </div>
+
+            </div>
+        )}
+
+        </div>
+
 
         <div className="mt-8">
             <h2 className="text-lg font-semibold text-gray-900">

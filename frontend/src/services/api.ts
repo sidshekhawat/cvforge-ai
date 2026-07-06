@@ -174,3 +174,40 @@ export async function jobMatchAnalysis(
 
   return response.json();
 }
+
+export async function
+generateImprovementRoadmap(
+  resume: string,
+  jobDescription: string
+) {
+  const token =
+    localStorage.getItem(
+      "access_token"
+    );
+
+  const response = await fetch(
+    `${API_BASE_URL}/ai/improvement-roadmap`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type":
+          "application/json",
+        Authorization:
+          `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        resume,
+        job_description:
+          jobDescription,
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      "Failed to generate roadmap"
+    );
+  }
+
+  return response.json();
+}

@@ -82,3 +82,20 @@ class CoverLetterRequest(BaseModel):
 
 class CoverLetterResponse(BaseModel):
     cover_letter: str
+
+class ImprovementRoadmapRequest(BaseModel):
+    resume: str
+    job_description: str
+
+
+class RoadmapItem(BaseModel):
+    priority: str
+    title: str
+    impact: int
+
+
+class ImprovementRoadmapResponse(
+    BaseModel
+):
+    estimated_score: int
+    roadmap: list[RoadmapItem]
