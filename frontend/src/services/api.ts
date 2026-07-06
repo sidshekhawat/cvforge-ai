@@ -78,3 +78,35 @@ export async function getAnalysisHistory() {
 
   return response.json();
 }
+
+export async function optimizeResume(
+  resume: string,
+  jobDescription: string
+) {
+  const token = localStorage.getItem(
+    "access_token"
+  );
+
+  const response = await fetch(
+    `${API_BASE_URL}/ai/optimize-resume`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        resume,
+        job_description: jobDescription,
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      "Failed to optimize resume"
+    );
+  }
+
+  return response.json();
+}

@@ -322,23 +322,99 @@ def optimize_resume(
     prompt = f"""
     You are an expert ATS resume optimizer.
 
-    Your task is to improve the resume while keeping it completely truthful.
+    Your task is to improve the resume while keeping it 100% truthful.
 
-    Rules:
-    1. Improve formatting and readability.
-    2. Improve ATS compatibility.
-    3. Reorganize information where useful.
-    4. Preserve all existing facts.
-    5. Do NOT invent skills, technologies, certifications, education, projects, companies, or job experience.
-    6. Do NOT claim knowledge of tools not present in the original resume.
-    7. If a skill is missing from the resume, do not add it.
-    8. Return only the optimized resume.
+    ABSOLUTE RULES:
+
+    1. Every piece of information in the output must already exist in the original resume.
+    2. Do NOT invent skills.
+    3. Do NOT invent technologies.
+    4. Do NOT invent certifications.
+    5. Do NOT invent education.
+    6. Do NOT invent projects.
+    7. Do NOT invent companies.
+    8. Do NOT invent internships.
+    9. Do NOT invent work experience.
+    10. Do NOT invent job titles.
+    11. Do NOT invent achievements.
+    12. Do NOT invent responsibilities.
+    13. Do NOT invent contact information.
+    14. Do NOT add placeholder text.
+    15. If information is missing, leave it missing.
+    16. Every statement in the optimized resume must be traceable to the original resume.
+
+    JOB DESCRIPTION RULES:
+
+    The job description is ONLY provided to:
+
+    - improve wording
+    - improve keyword placement
+    - improve organization
+    - improve ATS readability
+
+    The job description must NEVER be used to:
+
+    - create new skills
+    - create new experience
+    - create new projects
+    - create new education
+    - create new certifications
+    - create new job titles
+    - create new internships
+
+    FORMATTING RULES:
+
+    1. Do NOT use markdown.
+    2. Do NOT use **.
+    3. Do NOT use # headings.
+    4. Do NOT use ###.
+    5. Do NOT use placeholder sections.
+    6. Do NOT write notes.
+    7. Do NOT write explanations.
+    8. Do NOT write recommendations.
+    9. Do NOT write "Not Provided".
+    10. Do NOT write "Contact Information" unless contact information already exists in the resume.
+    11. Return ONLY the optimized resume text.
+    12. Do not explain your reasoning.
+    13. Do not describe your changes.
+    14. Do not provide a summary.
+    15. Do not provide notes.
+    16. Do not provide commentary.
+
+    ATS OPTIMIZATION RULES:
+
+    1. Improve grammar.
+    2. Improve clarity.
+    3. Improve professional wording.
+    4. Improve section organization.
+    5. Strengthen existing bullet points.
+    6. Improve keyword placement using keywords already present in the resume.
+    7. Preserve all facts.
+    8. Preserve all technologies already mentioned.
+    9. Preserve all projects already mentioned.
 
     RESUME:
     {resume}
 
     JOB DESCRIPTION:
     {job_description}
+
+    FINAL INSTRUCTION:
+
+    Your response must contain ONLY the final optimized resume.
+
+    Do NOT write:
+    - Notes
+    - Explanations
+    - Comments
+    - Recommendations
+    - Introductions
+    - Conclusions
+    - Statements about what you changed
+
+    The last line of your response must be part of the resume itself.
+
+    If you write anything outside the resume, your response is incorrect.
     """
 
     response = client.chat.completions.create(

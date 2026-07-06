@@ -13,6 +13,7 @@ import {
   analyzeResume,
   uploadResume,
   getAnalysisHistory,
+  optimizeResume,
 } from "@/src/services/api";
 import {
   LineChart,
@@ -58,6 +59,12 @@ export default function DashboardPage() {
 
     const [analysis, setAnalysis] =
     useState<ATSAnalysis | null>(null);
+
+    const [optimizedResume, setOptimizedResume] =
+    useState("");
+
+    const [optimizing, setOptimizing] =
+    useState(false);
 
     const [expandedAnalysisId, setExpandedAnalysisId] =
     useState<number | null>(null);
@@ -137,6 +144,26 @@ export default function DashboardPage() {
 
         window.location.href = "/login";
     }
+
+    const handleOptimizeResume = async () => {
+        try {
+            setOptimizing(true);
+
+            const result =
+            await optimizeResume(
+                resume,
+                jobDescription
+            );
+
+            setOptimizedResume(
+            result.optimized_resume
+            );
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setOptimizing(false);
+        }
+        };
 
     async function runAnalysis() {
 
@@ -367,6 +394,36 @@ return (
                 {getATSVerdict(latestScore).label}
             </span>
             </div>
+            </div>
+
+        <div className="mt-8 rounded-lg border bg-white p-6 shadow">
+            <h2 className="mb-4 text-2xl font-bold text-gray-900">
+                Resume Optimizer
+            </h2>
+
+            <button
+                onClick={handleOptimizeResume}
+                disabled={optimizing}
+                className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+            >
+                {optimizing
+                ? "Optimizing..."
+                : "Optimize Resume"}
+            </button>
+
+            {optimizedResume && (
+                <div className="mt-6">
+
+                <h3 className="font-semibold text-gray-900">
+                    Optimized Resume
+                </h3>
+
+                <div className="mt-2 max-h-96 overflow-y-auto rounded-lg border bg-gray-50 p-4 whitespace-pre-wrap text-gray-700">
+                    {optimizedResume}
+                </div>
+
+                </div>
+            )}
             </div>
 
         <div className="mt-8">
