@@ -142,3 +142,35 @@ export async function generateCoverLetter(
 
   return response.json();
 }
+
+export async function jobMatchAnalysis(
+  resume: string,
+  jobDescription: string
+) {
+  const token = localStorage.getItem(
+    "access_token"
+  );
+
+  const response = await fetch(
+    `${API_BASE_URL}/ai/job-match`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        resume,
+        job_description: jobDescription,
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      "Failed to analyze job match"
+    );
+  }
+
+  return response.json();
+}

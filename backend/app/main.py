@@ -19,6 +19,7 @@ from app.services.file_parser import (
     extract_text_from_pdf,
     extract_text_from_docx,
 )
+from app.api import job_match
 
 app = FastAPI(
     title="CVForge AI API",
@@ -41,6 +42,11 @@ app.include_router(
 )
 app.include_router(
     skill_gap_router
+)
+app.include_router(
+    job_match.router,
+    prefix="/ai",
+    tags=["Job Match"]
 )
 
 @app.get("/")

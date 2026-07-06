@@ -15,6 +15,7 @@ import {
   getAnalysisHistory,
   optimizeResume,
   generateCoverLetter,
+  jobMatchAnalysis,
 } from "@/src/services/api";
 import {
   LineChart,
@@ -70,6 +71,25 @@ export default function DashboardPage() {
     const [generatingCoverLetter,
         setGeneratingCoverLetter] =
     useState(false);
+
+    type JobMatchResult = {
+    match_score: number;
+    matched_skills: string[];
+    missing_skills: string[];
+    recommendations: string[];
+    experience_score: number;
+    project_score: number;
+    education_score: number;
+    certification_score: number;
+    };
+
+    const [jobMatchResult,
+            setJobMatchResult] =
+        useState<JobMatchResult | null>(null)
+
+        const [jobMatchLoading,
+            setJobMatchLoading] =
+        useState(false);
 
     const [optimizing, setOptimizing] =
     useState(false);
@@ -191,6 +211,26 @@ export default function DashboardPage() {
             console.error(error);
             } finally {
             setGeneratingCoverLetter(false);
+            }
+        };
+
+    const handleJobMatchAnalysis =
+        async () => {
+            try {
+            setJobMatchLoading(true);
+
+            const result =
+                await jobMatchAnalysis(
+                resume,
+                jobDescription
+                );
+
+            setJobMatchResult(result);
+
+            } catch (error) {
+            console.error(error);
+            } finally {
+            setJobMatchLoading(false);
             }
         };
 
@@ -483,6 +523,134 @@ return (
 
                 </div>
             )}
+            </div>
+
+        <div className="mt-8 rounded-lg border bg-white p-6 shadow">
+
+            <h2 className="mb-4 text-2xl font-bold text-gray-900">
+                Job Match Analysis
+            </h2>
+
+            <button
+                onClick={handleJobMatchAnalysis}
+                disabled={jobMatchLoading}
+                className="rounded bg-green-600 px-4 py-2 text-white"
+            >
+                {jobMatchLoading
+                ? "Analyzing..."
+                : "Analyze Job Match"}
+            </button>
+
+            {jobMatchResult && (
+                <div className="mt-6 space-y-4 text-gray-900">
+
+                <div>
+                    <h3 className="font-semibold text-gray-900">
+                    Match Score
+                    </h3>
+
+                    <p className="text-2xl font-bold text-green-600">
+                    {jobMatchResult.match_score}%
+                    </p>
+                </div>
+
+                <div>
+                    <h3 className="font-semibold text-gray-700">
+                    Matched Skills
+                    </h3>
+
+                    <ul>
+                    {jobMatchResult.matched_skills.map(
+                    (skill) => (
+                        <li
+                        key={skill}
+                        className="text-gray-700"
+                        >
+                        ✓ {skill.charAt(0).toUpperCase() + skill.slice(1)}
+                        </li>
+                    )
+                    )}
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 className="font-semibold text-gray-700">
+                    Missing Skills
+                    </h3>
+
+                    <ul>
+                    {jobMatchResult.missing_skills.map(
+                    (skill) => (
+                        <li
+                        key={skill}
+                        className="text-gray-700"
+                        >
+                        ✗ {skill.charAt(0).toUpperCase() + skill.slice(1)}
+                        </li>
+                    )
+                    )}
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 className="font-semibold text-gray-700">
+                    Recommendations
+                    </h3>
+
+                    <ul>
+                    {jobMatchResult.recommendations.map(
+                        (item: string) => (
+                        <li key={item}>
+                            • {item}
+                        </li>
+                        )
+                    )}
+                    </ul>
+                </div>
+
+               <div className="grid grid-cols-2 gap-4">
+
+                <div className="rounded-lg border p-4">
+                    <p className="text-sm text-gray-500">
+                    Experience
+                    </p>
+                    <p className="text-2xl font-bold">
+                    {jobMatchResult.experience_score}
+                    </p>
+                </div>
+
+                <div className="rounded-lg border p-4">
+                    <p className="text-sm text-gray-500">
+                    Projects
+                    </p>
+                    <p className="text-2xl font-bold">
+                    {jobMatchResult.project_score}
+                    </p>
+                </div>
+
+                <div className="rounded-lg border p-4">
+                    <p className="text-sm text-gray-500">
+                    Education
+                    </p>
+                    <p className="text-2xl font-bold">
+                    {jobMatchResult.education_score}
+                    </p>
+                </div>
+
+                <div className="rounded-lg border p-4">
+                    <p className="text-sm text-gray-500">
+                    Certifications
+                    </p>
+                    <p className="text-2xl font-bold">
+                    {jobMatchResult.certification_score}
+                    </p>
+                </div>
+
+                </div>
+
+                </div>
+            )}
+
             </div>
 
         <div className="mt-8">
