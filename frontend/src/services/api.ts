@@ -110,3 +110,35 @@ export async function optimizeResume(
 
   return response.json();
 }
+
+export async function generateCoverLetter(
+  resume: string,
+  jobDescription: string
+) {
+  const token = localStorage.getItem(
+    "access_token"
+  );
+
+  const response = await fetch(
+    `${API_BASE_URL}/ai/generate-cover-letter`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        resume,
+        job_description: jobDescription,
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      "Failed to generate cover letter"
+    );
+  }
+
+  return response.json();
+}

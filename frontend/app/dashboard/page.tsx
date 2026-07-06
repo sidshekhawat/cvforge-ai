@@ -14,6 +14,7 @@ import {
   uploadResume,
   getAnalysisHistory,
   optimizeResume,
+  generateCoverLetter,
 } from "@/src/services/api";
 import {
   LineChart,
@@ -62,6 +63,13 @@ export default function DashboardPage() {
 
     const [optimizedResume, setOptimizedResume] =
     useState("");
+
+    const [coverLetter, setCoverLetter] =
+    useState("");
+
+    const [generatingCoverLetter,
+        setGeneratingCoverLetter] =
+    useState(false);
 
     const [optimizing, setOptimizing] =
     useState(false);
@@ -163,6 +171,27 @@ export default function DashboardPage() {
         } finally {
             setOptimizing(false);
         }
+        };
+
+    const handleGenerateCoverLetter =
+        async () => {
+            try {
+            setGeneratingCoverLetter(true);
+
+            const result =
+                await generateCoverLetter(
+                resume,
+                jobDescription
+                );
+
+            setCoverLetter(
+                result.cover_letter
+            );
+            } catch (error) {
+            console.error(error);
+            } finally {
+            setGeneratingCoverLetter(false);
+            }
         };
 
     async function runAnalysis() {
@@ -420,6 +449,36 @@ return (
 
                 <div className="mt-2 max-h-96 overflow-y-auto rounded-lg border bg-gray-50 p-4 whitespace-pre-wrap text-gray-700">
                     {optimizedResume}
+                </div>
+
+                </div>
+            )}
+            </div>
+
+        <div className="mt-8 rounded-lg border bg-white p-6 shadow">
+            <h2 className="mb-4 text-2xl font-bold text-gray-900">
+                Cover Letter Generator
+            </h2>
+
+            <button
+                onClick={handleGenerateCoverLetter}
+                disabled={generatingCoverLetter}
+                className="rounded bg-purple-600 px-4 py-2 text-white hover:bg-purple-700"
+            >
+                {generatingCoverLetter
+                ? "Generating..."
+                : "Generate Cover Letter"}
+            </button>
+
+            {coverLetter && (
+                <div className="mt-6">
+
+                <h3 className="font-semibold text-gray-900">
+                    Cover Letter
+                </h3>
+
+                <div className="mt-2 max-h-96 overflow-y-auto rounded-lg border bg-gray-50 p-4 whitespace-pre-wrap text-gray-700">
+                    {coverLetter}
                 </div>
 
                 </div>

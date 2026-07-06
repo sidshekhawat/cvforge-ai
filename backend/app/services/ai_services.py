@@ -433,16 +433,22 @@ def generate_cover_letter(
     job_description: str
 ):
     prompt = f"""
-    You are an expert career coach and recruiter.
+    You are an expert recruiter and career coach.
 
     Using the resume and job description:
 
-    1. Write a professional cover letter.
-    2. Keep it concise.
-    3. Tailor it to the job.
-    4. Highlight relevant experience.
-    5. Do not invent qualifications.
-    6. Return only the cover letter.
+    1. Write a professional cover letter tailored to the role.
+    2. Keep it concise and natural.
+    3. Highlight the candidate's most relevant skills and qualifications.
+    4. Prioritize skills and technologies that match the job description.
+    5. Mention relevant experience when appropriate.
+    6. Only mention projects if they are highly relevant to the role.
+    7. Do not invent skills, projects, achievements, qualifications, or experience.
+    8. Do not use bullet points.
+    9. Return only the cover letter.
+    10Avoid repetitive phrases such as
+    "I am excited" and "I am confident"
+    multiple times within the same letter.
 
     RESUME:
     {resume}
