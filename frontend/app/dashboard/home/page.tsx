@@ -1,8 +1,34 @@
+"use client";
 import OrbitModule from "@/src/components/OrbitModule";
+import { useEffect, useState } from "react";
+
 
 export default function HomeHub() {
   const orbitBase =
     "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border";
+
+  const [innerRotation, setInnerRotation] = useState(0);
+  const [middleRotation, setMiddleRotation] = useState(0);
+  const [outerRotation, setOuterRotation] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setInnerRotation((prev) => prev + 0.25);
+      setMiddleRotation((prev) => prev + 0.15);
+      setOuterRotation((prev) => prev + 0.08);
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const universeSize =
+  typeof window !== "undefined"
+    ? Math.min(window.innerWidth, window.innerHeight) * 0.85
+    : 900;
+
+    const INNER_RADIUS = universeSize * 0.175;
+    const MIDDLE_RADIUS = universeSize * 0.325;
+    const OUTER_RADIUS = universeSize * 0.475;
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#050816]">
@@ -57,74 +83,79 @@ export default function HomeHub() {
 
 <div className="relative z-10 flex min-h-screen items-center justify-center">
 
-<div className="relative flex flex-col items-center -translate-y-20">
+<div className="relative h-[85vmin] w-[85vmin]">
+
 
 {/* Orbit Rings*/}        
 
-<div className={`${orbitBase} h-[300px] w-[300px] border-cyan-400/25`} />
+<div className={`${orbitBase} h-[35%] w-[35%] border-cyan-400/25`} />
 
-<div className={`${orbitBase} h-[500px] w-[500px] border-cyan-400/20`} />
+<div className={`${orbitBase} h-[65%] w-[65%] border-cyan-400/20`} />
 
-<div className={`${orbitBase} h-[700px] w-[700px] border-cyan-400/20`} />
+<div className={`${orbitBase} h-[95%] w-[95%] border-cyan-400/20`} />
 
-<div className={`${orbitBase} h-[960px] w-[960px] border-cyan-400/20`} />
+<div className="absolute inset-0 flex items-center justify-center">
 {/* Orbit System*/}
+
 <OrbitModule
   title="Resume Builder"
   description="Create ATS-ready resumes"
-  radius={550}
-  angle={225}
+  radius={OUTER_RADIUS}
+  angle={225 + outerRotation}
 />
 
 <OrbitModule
   title="ATS Analyzer"
   description="Analyze ATS compatibility"
-  radius={550}
-  angle={315}
+   radius={OUTER_RADIUS}
+  angle={315 + outerRotation}
 />
 
 <OrbitModule
   title="Templates"
   description="Professional resume designs"
-  radius={550}
-  angle={45}
+   radius={OUTER_RADIUS}
+  angle={45 + outerRotation}
 />
 
 <OrbitModule
   title="Profile"
   description="Manage account settings"
-  radius={550}
-  angle={135}
+   radius={OUTER_RADIUS}
+  angle={135 + outerRotation}
 />
 
 <OrbitModule
   title="Cover Letter"
   description="Generate tailored letters"
-  radius={450}
-  angle={30}
+  radius={MIDDLE_RADIUS}
+  angle={30 + middleRotation}
 />
 
 <OrbitModule
   title="Job Match"
   description="Match resumes with jobs"
-  radius={400}
-  angle={210}
+  radius={MIDDLE_RADIUS}
+  angle={210 + middleRotation}
 />
 
 <OrbitModule
   title="Analytics"
   description="Track ATS performance"
-  radius={300}
-  angle={90}
+  radius={INNER_RADIUS}
+  angle={90 + innerRotation}
 />
 
 <OrbitModule
   title="History"
   description="View past analyses"
-  radius={250}
-  angle={270}
+  radius={INNER_RADIUS}
+  angle={270 + innerRotation}
 />
 
+</div>
+
+<div className="absolute inset-0 flex flex-col items-center justify-center">
 
 {/*Core Glow */}           
 
@@ -147,14 +178,15 @@ className="
     CVForge
 </h1>
 
+
 {/* AI Badge */}
 
 <div className="
     absolute
-    -top-1
+    -top-0
     -right-2
-    px-3
-    py-1
+    px-2
+    py-0.5
     rounded-xl
     border
     border-cyan-400
@@ -184,6 +216,7 @@ className="
 
     </div>
 
+    </div>
     </div>
 
     </div>

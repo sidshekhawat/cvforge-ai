@@ -16,9 +16,12 @@ export default function OrbitModule({
 
   return (
     <div
-      className="absolute"
+      className="absolute top-1/2 left-1/2"
       style={{
-        transform: `translate(${x}px, ${y}px) translate(-50%, -50%)`
+        transform: `
+          translate(-50%, -50%)
+          translate(${x}px, ${y}px)
+        `
       }}
     >
       <div
