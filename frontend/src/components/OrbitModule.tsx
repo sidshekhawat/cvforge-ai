@@ -1,8 +1,13 @@
+import Link from "next/link";
+import { LucideIcon } from "lucide-react";
+
 interface OrbitModuleProps {
   title: string;
   description: string;
   radius: number;
   angle: number;
+  icon: LucideIcon;
+  href: string;
 }
 
 export default function OrbitModule({
@@ -10,9 +15,12 @@ export default function OrbitModule({
   description,
   radius,
   angle,
+  icon,
+  href,
 }: OrbitModuleProps) {
   const x = Math.cos((angle * Math.PI) / 180) * radius;
   const y = Math.sin((angle * Math.PI) / 180) * radius;
+  const Icon = icon;
 
   return (
     <div
@@ -24,6 +32,7 @@ export default function OrbitModule({
         `
       }}
     >
+    <Link href={href}>
       <div
         className="
           flex
@@ -36,6 +45,7 @@ export default function OrbitModule({
           backdrop-blur-sm
           px-4
           py-2
+          cursor-pointer
           shadow-[0_0_20px_rgba(34,211,238,0.2)]
         "
       >
@@ -52,7 +62,7 @@ export default function OrbitModule({
             text-cyan-300
           "
         >
-          📄
+          <Icon size={18} />
         </div>
 
         <div>
@@ -65,6 +75,7 @@ export default function OrbitModule({
           </p>
         </div>
       </div>
+    </Link>
     </div>
   );
-}
+} 

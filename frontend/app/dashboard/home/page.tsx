@@ -2,6 +2,17 @@
 import OrbitModule from "@/src/components/OrbitModule";
 import { useEffect, useState } from "react";
 
+import {
+  FileText,
+  ScanSearch,
+  Mail,
+  Briefcase,
+  BarChart3,
+  History,
+  LayoutTemplate,
+  User,
+} from "lucide-react";
+
 
 export default function HomeHub() {
   const orbitBase =
@@ -21,14 +32,25 @@ export default function HomeHub() {
     return () => clearInterval(interval);
   }, []);
 
-  const universeSize =
-  typeof window !== "undefined"
-    ? Math.min(window.innerWidth, window.innerHeight) * 0.85
-    : 900;
+  const [universeSize, setUniverseSize] = useState(900);
 
-    const INNER_RADIUS = universeSize * 0.175;
-    const MIDDLE_RADIUS = universeSize * 0.325;
-    const OUTER_RADIUS = universeSize * 0.475;
+  useEffect(() => {
+    const updateSize = () => {
+      setUniverseSize(
+        Math.min(window.innerWidth, window.innerHeight) * 0.85
+      );
+    };
+
+    updateSize();
+
+    window.addEventListener("resize", updateSize);
+
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
+  const INNER_RADIUS = universeSize * 0.175;
+  const MIDDLE_RADIUS = universeSize * 0.325;
+  const OUTER_RADIUS = universeSize * 0.475;
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#050816]">
@@ -102,6 +124,8 @@ export default function HomeHub() {
   description="Create ATS-ready resumes"
   radius={OUTER_RADIUS}
   angle={225 + outerRotation}
+  icon={FileText}
+  href="/dashboard/resume"
 />
 
 <OrbitModule
@@ -109,6 +133,8 @@ export default function HomeHub() {
   description="Analyze ATS compatibility"
    radius={OUTER_RADIUS}
   angle={315 + outerRotation}
+  icon={ScanSearch}
+  href="/dashboard/ats"
 />
 
 <OrbitModule
@@ -116,6 +142,8 @@ export default function HomeHub() {
   description="Professional resume designs"
    radius={OUTER_RADIUS}
   angle={45 + outerRotation}
+  icon={LayoutTemplate}
+  href="/dashboard/templates"
 />
 
 <OrbitModule
@@ -123,6 +151,8 @@ export default function HomeHub() {
   description="Manage account settings"
    radius={OUTER_RADIUS}
   angle={135 + outerRotation}
+  icon={User}
+  href="/dashboard/profile"
 />
 
 <OrbitModule
@@ -130,6 +160,8 @@ export default function HomeHub() {
   description="Generate tailored letters"
   radius={MIDDLE_RADIUS}
   angle={30 + middleRotation}
+  icon={Mail}
+  href="/dashboard/cover-letter"
 />
 
 <OrbitModule
@@ -137,6 +169,8 @@ export default function HomeHub() {
   description="Match resumes with jobs"
   radius={MIDDLE_RADIUS}
   angle={210 + middleRotation}
+  icon={Briefcase}
+  href="/dashboard/job-match"
 />
 
 <OrbitModule
@@ -144,6 +178,8 @@ export default function HomeHub() {
   description="Track ATS performance"
   radius={INNER_RADIUS}
   angle={90 + innerRotation}
+  icon={BarChart3}
+  href="/dashboard/analytics"
 />
 
 <OrbitModule
@@ -151,6 +187,8 @@ export default function HomeHub() {
   description="View past analyses"
   radius={INNER_RADIUS}
   angle={270 + innerRotation}
+  icon={History}
+  href="/dashboard/history"
 />
 
 </div>
