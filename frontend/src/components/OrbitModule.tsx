@@ -24,7 +24,7 @@ export default function OrbitModule({
 
   return (
     <div
-      className="absolute top-1/2 left-1/2"
+      className="absolute top-1/2 left-1/2  z-50"
       style={{
         transform: `
           translate(-50%, -50%)
@@ -35,6 +35,7 @@ export default function OrbitModule({
     <Link href={href}>
       <div
         className="
+          group
           flex
           items-center
           gap-3
@@ -47,6 +48,17 @@ export default function OrbitModule({
           py-2
           cursor-pointer
           shadow-[0_0_20px_rgba(34,211,238,0.2)]
+
+          transform-gpu
+          transition-all
+          duration-300
+          ease-out
+
+          hover:scale-105
+          hover:-translate-y-1
+          hover:border-cyan-300/60
+          hover:bg-cyan-500/10
+          hover:shadow-[0_0_35px_rgba(34,211,238,0.35)]
         "
       >
         <div
@@ -60,6 +72,10 @@ export default function OrbitModule({
             items-center
             justify-center
             text-cyan-300
+            transition-all
+            duration-300
+            group-hover:scale-110
+            group-hover:text-cyan-200
           "
         >
           <Icon size={18} />
