@@ -4,13 +4,21 @@ export default function ResumePage() {
 const [name, setName] = useState("");
 const [email, setEmail] = useState("");
 const [phone, setPhone] = useState("");
-const [college, setCollege] = useState("");
-const [degree, setDegree] = useState("");
+const [education, setEducation] = useState([
+  {
+    degree: "",
+    college: "",
+  },
+]);
 
-const [project, setProject] = useState("");
-const [projectDesc, setProjectDesc] = useState("");
+const [projects, setProjects] = useState([
+  {
+    title: "",
+    description: "",
+  },
+]);
 
-const [skills, setSkills] = useState("");
+const [skills, setSkills] = useState([""]);
 
   return (
     <div className="min-h-screen bg-black text-white p-8">
@@ -91,61 +99,132 @@ const [skills, setSkills] = useState("");
               Education
             </h2>
 
-            <div className="mb-4">
-              <label className="block text-sm mb-2">
-                College
-              </label>
-              <input
-                type="text"
-                value={college}
-                onChange={(e) => setCollege(e.target.value)}
-                placeholder="Enter your college"
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
-              />
-            </div>
+            {education.map((edu, index) => (
+              <div
+                key={index}
+                className="mb-6 rounded-lg border border-zinc-700 p-4"
+              >
+                <div className="mb-4">
+                  <label className="block text-sm mb-2">
+                    Degree
+                  </label>
 
-            <div className="mb-4">
-              <label className="block text-sm mb-2">
-                Degree
-              </label>
-              <input
-                type="text"
-                value={degree}
-                onChange={(e) => setDegree(e.target.value)}
-                placeholder="Enter your degree"
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
-              />
-            </div>
+                  <input
+                    type="text"
+                    value={edu.degree}
+                    onChange={(e) => {
+                      const updatedEducation = [...education];
+                      updatedEducation[index].degree =
+                        e.target.value;
+                      setEducation(updatedEducation);
+                    }}
+                    placeholder="Enter degree"
+                    className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
+                  />
+                </div>
+
+                <div className="mb-4">
+                  <label className="block text-sm mb-2">
+                    College
+                  </label>
+
+                  <input
+                    type="text"
+                    value={edu.college}
+                    onChange={(e) => {
+                      const updatedEducation = [...education];
+                      updatedEducation[index].college =
+                        e.target.value;
+                      setEducation(updatedEducation);
+                    }}
+                    placeholder="Enter college"
+                    className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
+                  />
+                </div>
+              </div>
+            ))}
+
+            <button
+              type="button"
+              onClick={() =>
+                setEducation([
+                  ...education,
+                  {
+                    degree: "",
+                    college: "",
+                  },
+                ])
+              }
+              className="mt-2 rounded-lg bg-blue-600 px-4 py-2"
+            >
+              + Add Education
+            </button>
 
             <h2 className="text-xl font-semibold mt-6 mb-4">
               Projects
             </h2>
+            {projects.map((project, index) => (
+              <div
+                key={index}
+                className="mb-6 rounded-lg border border-zinc-700 p-4"
+              >
+                {/* Project fields go here */}
 
-            <div className="mb-4">
-              <label className="block text-sm mb-2">
-                Project Name
-              </label>
-              <input
-                type="text"
-                value={project}
-                onChange={(e) => setProject(e.target.value)}
-                placeholder="Enter project name"
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
-              />
-            </div>
+              <div className="mb-4">
+                <label className="block text-sm mb-2">
+                  Project Name
+                </label>
 
-            <div className="mb-4">
-              <label className="block text-sm mb-2">
-                Project Description
-              </label>
-              <textarea
-                value={projectDesc}
-                onChange={(e) => setProjectDesc(e.target.value)}
-                placeholder="Describe your project"
-                rows={4}
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
-              />
-            </div>
+                <input
+                  type="text"
+                  value={project.title}
+                  onChange={(e) => {
+                    const updatedProjects = [...projects];
+                    updatedProjects[index].title =
+                      e.target.value;
+                    setProjects(updatedProjects);
+                  }}
+                  placeholder="Enter project name"
+                  className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-sm mb-2">
+                  Project Description
+                </label>
+
+                <textarea
+                  value={project.description}
+                  onChange={(e) => {
+                    const updatedProjects = [...projects];
+                    updatedProjects[index].description =
+                      e.target.value;
+                    setProjects(updatedProjects);
+                  }}
+                  placeholder="Describe your project"
+                  rows={4}
+                  className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
+                />
+              </div>
+              </div>
+            ))}
+
+            <button
+              type="button"
+              onClick={() =>
+                setProjects([
+                  ...projects,
+                  {
+                    title: "",
+                    description: "",
+                  },
+                ])
+              }
+              className="mt-2 rounded-lg bg-blue-600 px-4 py-2"
+            >
+              + Add Project
+            </button>
 
             <h2 className="text-xl font-semibold mt-6 mb-4">
               Skills
@@ -155,13 +234,35 @@ const [skills, setSkills] = useState("");
               <label className="block text-sm mb-2">
                 Skills
               </label>
-              <input
-                type="text"
-                value={skills}
-                onChange={(e) => setSkills(e.target.value)}
-                placeholder="Python, FastAPI, PostgreSQL, React"
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
-              />
+              {skills.map((skill, index) => (
+                <div key={index} className="mb-4">
+                  <label className="block text-sm mb-2">
+                    Skill {index + 1}
+                  </label>
+
+                  <input
+                    type="text"
+                    value={skill}
+                    onChange={(e) => {
+                      const updatedSkills = [...skills];
+                      updatedSkills[index] = e.target.value;
+                      setSkills(updatedSkills);
+                    }}
+                    placeholder="Enter skill"
+                    className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
+                  />
+                </div>
+              ))}
+
+              <button
+                type="button"
+                onClick={() =>
+                  setSkills([...skills, ""])
+                }
+                className="mt-2 rounded-lg bg-blue-600 px-4 py-2"
+              >
+                + Add Skill
+              </button>
             </div>
           </div>
         </div>
@@ -191,13 +292,17 @@ const [skills, setSkills] = useState("");
             Education
           </h3>
 
-          <p>
-            {degree || "Degree"}
-          </p>
+          {education.map((edu, index) => (
+            <div key={index} className="mb-4">
+              <p className="font-medium">
+                {edu.degree || "Degree"}
+              </p>
 
-          <p className="text-zinc-400">
-            {college || "College"}
-          </p>
+              <p className="text-zinc-400">
+                {edu.college || "College"}
+              </p>
+            </div>
+          ))}
 
           <hr className="my-4 border-zinc-700" />
 
@@ -205,13 +310,17 @@ const [skills, setSkills] = useState("");
             Projects
           </h3>
 
-          <p className="font-medium">
-            {project || "Project Name"}
-          </p>
+          {projects.map((project, index) => (
+            <div key={index} className="mb-4">
+              <p className="font-medium">
+                {project.title || "Project Name"}
+              </p>
 
-          <p className="text-zinc-400">
-            {projectDesc || "Project Description"}
-          </p>
+              <p className="text-zinc-400">
+                {project.description || "Project Description"}
+              </p>
+            </div>
+          ))}
 
           <hr className="my-4 border-zinc-700" />
 
@@ -219,9 +328,16 @@ const [skills, setSkills] = useState("");
             Skills
           </h3>
 
-          <p>
-            {skills || "Your Skills"}
-          </p>
+          <div className="flex flex-wrap gap-2">
+            {skills.map((skill, index) => (
+              <span
+                key={index}
+                className="rounded-md bg-zinc-800 px-3 py-1 text-sm"
+              >
+                {skill || "Skill"}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </div>
