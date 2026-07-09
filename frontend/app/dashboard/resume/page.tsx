@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import ProfessionalTemplate from "@/src/components/templates/ProfessionalTemplate";
 export default function ResumePage() {
 const [name, setName] = useState("");
 const [email, setEmail] = useState("");
@@ -34,6 +35,8 @@ const [experience, setExperience] = useState([
 ]);
 const [certifications, setCertifications] = useState([""]);
 const [achievements, setAchievements] = useState([""]);
+const [selectedTemplate, setSelectedTemplate] =
+  useState("professional");
 
   return (
     <div className="min-h-screen bg-black text-white p-8">
@@ -580,145 +583,53 @@ const [achievements, setAchievements] = useState([""]);
             </div>
           </div>
         </div>
-
-        <div className="rounded-2xl border border-cyan-400/20 bg-cyan-500/5 p-6">
-          <h2 className="mb-6 text-2xl font-semibold">
-            Resume Preview
+        <div className="mb-6">
+          <h2 className="mb-4 text-xl font-semibold">
+            Choose Template
           </h2>
 
-          <div className="rounded-xl bg-white p-8 text-black">
-            <div className="text-center">
-              <h1 className="text-3xl font-bold uppercase tracking-wide">
-                {name || "Your Name"}
-              </h1>
-              <div className="mt-4 flex justify-between text-[15px] text-gray-600">
-              
-              <div>
-                <p>
-                  <span className="font-medium">Email:</span>{" "}
-                  {email}
-                </p>
+          <div className="flex gap-3">
+            <button
+              onClick={() => setSelectedTemplate("professional")}
+              className="rounded-lg bg-blue-600 px-4 py-2"
+            >
+              Professional
+            </button>
 
-                <p>
-                  <span className="font-medium">Phone:</span>{" "}
-                  {phone}
-                </p>
+            <button
+              onClick={() => setSelectedTemplate("modern")}
+              className="rounded-lg bg-blue-600 px-4 py-2"
+            >
+              Modern
+            </button>
 
-                <p>
-                  <span className="font-medium">Location:</span>{" "}
-                  {location}
-                </p>
-                </div>
-
-                <div className="text-right">
-                  <p>
-                    <span className="font-medium">LinkedIn:</span>{" "}
-                    {linkedin}
-                  </p>
-
-                  <p>
-                    <span className="font-medium">GitHub:</span>{" "}
-                    {github}
-                  </p>
-
-                  <p>
-                    <span className="font-medium">Portfolio:</span>{" "}
-                    {portfolio}
-                  </p>
-                </div>
-            </div>
-            </div>
-          
-          <hr className="my-6 border-gray-400" />
-
-          <h3 className="mt-6 mb-3 border-b border-gray-400 pb-1 text-sm font-bold uppercase tracking-wider">
-            Education
-          </h3>
-
-          {education.map((edu, index) => (
-            <div key={index} className="mb-4">
-              <p className="font-medium">
-                {edu.degree || "Degree"}
-              </p>
-
-              <p className="text-zinc-400">
-                {edu.college || "College"}
-              </p>
-            </div>
-          ))}
-
-          <hr className="my-4 border-zinc-700" />
-
-          <h3 className="mt-6 mb-3 border-b border-gray-400 pb-1 text-sm font-bold uppercase tracking-wider">
-            Experience
-          </h3>
-
-          {experience.map((exp, index) => (
-            <div key={index} className="mb-4">
-              <p className="text-lg font-bold">
-                {exp.role || "Role"}
-              </p>
-
-              <p className="text-sm text-gray-600">
-                {exp.company || "Company"} • {exp.duration || "Duration"}
-              </p>
-
-              <p className="mt-1 text-sm text-gray-600 leading-relaxed">
-                • {exp.description || "Description"}
-              </p>
-            </div>
-          ))}
-
-          <h3 className="mt-6 mb-3 border-b border-gray-400 pb-1 text-sm font-bold uppercase tracking-wider">
-            Projects
-          </h3>
-
-          {projects.map((project, index) => (
-            <div key={index} className="mb-6">
-              <p className="text-lg font-bold">
-                {project.title || "Project Name"}
-              </p>
-
-              <p className="text-sm text-gray-600 leading-relaxed">
-                • {project.description || "Project Description"}
-              </p>
-            </div>
-          ))}
-
-          <hr className="my-4 border-zinc-700" />
-
-          <h3 className="mt-6 mb-3 border-b border-gray-400 pb-1 text-sm font-bold uppercase tracking-wider">
-            Skills
-          </h3>
-
-          <p className="text-sm">
-            {skills
-              .filter((skill) => skill.trim())
-              .join(" • ")}
-          </p>
-
-          <h3 className="mt-6 mb-3 border-b border-gray-400 pb-1 text-sm font-bold uppercase tracking-wider">
-            Certifications
-          </h3>
-
-          {certifications.map((certification, index) => (
-            <p key={index} className="mb-2">
-              • {certification || "Certification"}
-            </p>
-          ))}
-
-          <h3 className="mt-6 mb-3 border-b border-gray-400 pb-1 text-sm font-bold uppercase tracking-wider">
-            Achievements
-          </h3>
-
-          {achievements.map((achievement, index) => (
-            <p key={index} className="mb-2">
-              • {achievement || "Achievement"}
-            </p>
-          ))}
-        </div>
+            <button
+              onClick={() => setSelectedTemplate("minimal")}
+              className="rounded-lg bg-blue-600 px-4 py-2"
+            >
+              Minimal
+            </button>
+          </div>
+          {selectedTemplate === "professional" && (
+            <ProfessionalTemplate
+              name={name}
+              email={email}
+              phone={phone}
+              location={location}
+              linkedin={linkedin}
+              github={github}
+              portfolio={portfolio}
+              education={education}
+              experience={experience}
+              projects={projects}
+              skills={skills}
+              certifications={certifications}
+              achievements={achievements}
+            />
+          )}
         </div>
       </div>
-    </div>
-  );
+      </div>
+    );
 }
+      
