@@ -15,7 +15,7 @@ type Project = {
   description: string;
 };
 
-interface ProfessionalTemplateProps {
+interface ModernTemplateProps {
   name: string;
   email: string;
   phone: string;
@@ -32,7 +32,7 @@ interface ProfessionalTemplateProps {
   certifications: string[];
   achievements: string[];
 }
-export default function ProfessionalTemplate({
+export default function ModernTemplate({
   name,
   email,
   phone,
@@ -46,61 +46,39 @@ export default function ProfessionalTemplate({
   skills,
   certifications,
   achievements,
-}: ProfessionalTemplateProps) {
+}: ModernTemplateProps) {
   return (
     <div className="rounded-2xl border border-cyan-400/20 bg-cyan-500/5 p-6">
-    
-          <div className="rounded-xl bg-white p-8 text-black">
-            <div className="text-center">
-              <h1 className="text-3xl font-bold uppercase tracking-wide">
-                {name || "Your Name"}
-              </h1>
-              <div className="mt-4 flex justify-between text-[15px] text-gray-600">
-              
-              <div>
-                <p>
-                  <span className="font-medium">Email:</span>{" "}
-                  {email}
+          <div className="rounded-2xl bg-white p-8 text-black shadow-xl">
+            <div className="mb-6 border-b-2 pb-4">
+                <h1 className="text-4xl font-bold tracking-wide">
+                    {name || "Your Name"}
+                </h1>
+
+                <p className="mt-2 text-gray-600">
+                    {email} • {phone} • {location}
                 </p>
 
-                <p>
-                  <span className="font-medium">Phone:</span>{" "}
-                  {phone}
+                <p className="text-gray-600">
+                    {linkedin} • {github}
                 </p>
 
-                <p>
-                  <span className="font-medium">Location:</span>{" "}
-                  {location}
-                </p>
-                </div>
-
-                <div className="text-right">
-                  <p>
-                    <span className="font-medium">LinkedIn:</span>{" "}
-                    {linkedin}
-                  </p>
-
-                  <p>
-                    <span className="font-medium">GitHub:</span>{" "}
-                    {github}
-                  </p>
-
-                  <p>
-                    <span className="font-medium">Portfolio:</span>{" "}
+                {portfolio && (
+                    <p className="text-gray-600">
                     {portfolio}
-                  </p>
+                    </p>
+                )}
                 </div>
-            </div>
-            </div>
-          
-          <hr className="my-6 border-gray-400" />
 
-          <h3 className="mt-6 mb-3 border-b border-gray-400 pb-1 text-sm font-bold uppercase tracking-wider">
+          <h3 className="mt-8 mb-4 border-l-4 border-black pl-3 text-lg font-bold uppercase tracking-wider">
             Education
           </h3>
 
           {education.map((edu, index) => (
-            <div key={index} className="mb-4">
+            <div
+            key={index}
+            className="mb-4 rounded-xl border border-gray-300 p-4 shadow-sm"
+            >
               <p className="font-medium">
                 {edu.degree || "Degree"}
               </p>
@@ -111,14 +89,15 @@ export default function ProfessionalTemplate({
             </div>
           ))}
 
-          <hr className="my-4 border-zinc-700" />
-
-          <h3 className="mt-6 mb-3 border-b border-gray-400 pb-1 text-sm font-bold uppercase tracking-wider">
+          <h3 className="mt-8 mb-4 border-l-4 border-black pl-3 text-lg font-bold uppercase tracking-wider">
             Experience
           </h3>
 
           {experience.map((exp, index) => (
-            <div key={index} className="mb-4">
+            <div
+            key={index}
+            className="mb-4 rounded-xl border border-gray-300 p-4 shadow-sm"
+            >
               <p className="text-lg font-bold">
                 {exp.role || "Role"}
               </p>
@@ -133,12 +112,15 @@ export default function ProfessionalTemplate({
             </div>
           ))}
 
-          <h3 className="mt-6 mb-3 border-b border-gray-400 pb-1 text-sm font-bold uppercase tracking-wider">
+          <h3 className="mt-8 mb-4 border-l-4 border-black pl-3 text-lg font-bold uppercase tracking-wider">
             Projects
           </h3>
 
           {projects.map((project, index) => (
-            <div key={index} className="mb-6">
+            <div
+            key={index}
+            className="mb-4 rounded-xl border border-gray-300 p-4 shadow-sm"
+            >
               <p className="text-lg font-bold">
                 {project.title || "Project Name"}
               </p>
@@ -149,19 +131,24 @@ export default function ProfessionalTemplate({
             </div>
           ))}
 
-          <hr className="my-4 border-zinc-700" />
-
-          <h3 className="mt-6 mb-3 border-b border-gray-400 pb-1 text-sm font-bold uppercase tracking-wider">
+          <h3 className="mt-8 mb-4 border-l-4 border-black pl-3 text-lg font-bold uppercase tracking-wider">
             Skills
           </h3>
 
-          <p className="text-sm">
-            {skills
-              .filter((skill) => skill.trim())
-              .join(" • ")}
-          </p>
+        <div className="flex flex-wrap gap-2">
+        {skills
+            .filter((skill) => skill.trim())
+            .map((skill, index) => (
+            <span
+                key={index}
+                className="rounded-full border border-gray-300 px-3 py-1 text-sm font-medium"
+            >
+                {skill}
+            </span>
+            ))}
+        </div>
 
-          <h3 className="mt-6 mb-3 border-b border-gray-400 pb-1 text-sm font-bold uppercase tracking-wider">
+          <h3 className="mt-8 mb-4 border-l-4 border-black pl-3 text-lg font-bold uppercase tracking-wider">
             Certifications
           </h3>
 
@@ -171,7 +158,7 @@ export default function ProfessionalTemplate({
             </p>
           ))}
 
-          <h3 className="mt-6 mb-3 border-b border-gray-400 pb-1 text-sm font-bold uppercase tracking-wider">
+          <h3 className="mt-8 mb-4 border-l-4 border-black pl-3 text-lg font-bold uppercase tracking-wider">
             Achievements
           </h3>
 
