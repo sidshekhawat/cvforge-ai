@@ -2,6 +2,7 @@
 import { useState } from "react";
 import ProfessionalTemplate from "@/src/components/templates/ProfessionalTemplate";
 import ModernTemplate from "@/src/components/templates/ModernTemplate";
+import MinimalTemplate from "@/src/components/templates/MinimalTemplate";
 export default function ResumePage() {
 const [name, setName] = useState("");
 const [email, setEmail] = useState("");
@@ -630,6 +631,23 @@ const [selectedTemplate, setSelectedTemplate] =
           )}
           {selectedTemplate === "modern" && (
             <ModernTemplate
+              name={name}
+              email={email}
+              phone={phone}
+              location={location}
+              linkedin={linkedin}
+              github={github}
+              portfolio={portfolio}
+              education={education}
+              experience={experience}
+              projects={projects}
+              skills={skills}
+              certifications={certifications}
+              achievements={achievements}
+            />
+          )}
+          {selectedTemplate === "minimal" && (
+            <MinimalTemplate
               name={name}
               email={email}
               phone={phone}
