@@ -50,7 +50,7 @@ export default function MinimalTemplate({
   return (
     <div className="rounded-2xl border border-cyan-400/20 bg-cyan-500/5 p-6">
     
-          <div className="bg-white p-10 text-black">
+          <div className="text-black">
             <div className="mb-8">
             <h1 className="text-5xl font-light">
                 {name || "Your Name"}

@@ -50,7 +50,7 @@ export default function ProfessionalTemplate({
   return (
     <div className="rounded-2xl border border-cyan-400/20 bg-cyan-500/5 p-6">
     
-          <div className="rounded-xl bg-white p-8 text-black">
+          <div className="text-black">
             <div className="text-center">
               <h1 className="text-3xl font-bold uppercase tracking-wide">
                 {name || "Your Name"}

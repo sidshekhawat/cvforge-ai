@@ -3,6 +3,7 @@ import { useState } from "react";
 import ProfessionalTemplate from "@/src/components/templates/ProfessionalTemplate";
 import ModernTemplate from "@/src/components/templates/ModernTemplate";
 import MinimalTemplate from "@/src/components/templates/MinimalTemplate";
+import A4Page from "@/src/components/resume/A4Page";
 export default function ResumePage() {
 const [name, setName] = useState("");
 const [email, setEmail] = useState("");
@@ -585,12 +586,13 @@ const [selectedTemplate, setSelectedTemplate] =
             </div>
           </div>
         </div>
-        <div className="mb-6">
-          <h2 className="mb-4 text-xl font-semibold">
-            Choose Template
-          </h2>
+        <div className="sticky top-6 self-start max-h-[90vh] overflow-y-auto">
+          <div className="sticky top-0 z-10 bg-black pb-4">
+            <h2 className="mb-4 text-xl font-semibold">
+              Choose Template
+            </h2>
 
-          <div className="flex gap-3">
+            <div className="flex gap-3">
             <button
               onClick={() => setSelectedTemplate("professional")}
               className="rounded-lg bg-blue-600 px-4 py-2"
@@ -612,7 +614,9 @@ const [selectedTemplate, setSelectedTemplate] =
               Minimal
             </button>
           </div>
+          </div>
           {selectedTemplate === "professional" && (
+             <A4Page>
             <ProfessionalTemplate
               name={name}
               email={email}
@@ -628,8 +632,10 @@ const [selectedTemplate, setSelectedTemplate] =
               certifications={certifications}
               achievements={achievements}
             />
+             </A4Page>
           )}
           {selectedTemplate === "modern" && (
+              <A4Page>
             <ModernTemplate
               name={name}
               email={email}
@@ -645,8 +651,10 @@ const [selectedTemplate, setSelectedTemplate] =
               certifications={certifications}
               achievements={achievements}
             />
+             </A4Page>
           )}
           {selectedTemplate === "minimal" && (
+            <A4Page>
             <MinimalTemplate
               name={name}
               email={email}
@@ -662,6 +670,7 @@ const [selectedTemplate, setSelectedTemplate] =
               certifications={certifications}
               achievements={achievements}
             />
+             </A4Page>
           )}
         </div>
       </div>

@@ -49,7 +49,7 @@ export default function ModernTemplate({
 }: ModernTemplateProps) {
   return (
     <div className="rounded-2xl border border-cyan-400/20 bg-cyan-500/5 p-6">
-          <div className="rounded-2xl bg-white p-8 text-black shadow-xl">
+          <div className="text-black">
             <div className="mb-6 border-b-2 pb-4">
                 <h1 className="text-4xl font-bold tracking-wide">
                     {name || "Your Name"}
