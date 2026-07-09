@@ -33,6 +33,7 @@ const [experience, setExperience] = useState([
   },
 ]);
 const [certifications, setCertifications] = useState([""]);
+const [achievements, setAchievements] = useState([""]);
 
   return (
     <div className="min-h-screen bg-black text-white p-8">
@@ -203,6 +204,19 @@ const [certifications, setCertifications] = useState([""]);
                     className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
                   />
                 </div>
+                {education.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setEducation(
+                        education.filter((_, i) => i !== index)
+                      )
+                    }
+                    className="mt-2 rounded-lg bg-red-600 px-4 py-2 text-white"
+                  >
+                    Delete Education
+                  </button>
+                )}
               </div>
             ))}
 
@@ -306,6 +320,19 @@ const [certifications, setCertifications] = useState([""]);
                     className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
                   />
                 </div>
+
+                {experience.length > 1 && (
+                  <button
+                    onClick={() =>
+                      setExperience(
+                        experience.filter((_, i) => i !== index)
+                      )
+                    }
+                    className="mt-2 rounded-lg bg-red-600 px-4 py-2 text-white"
+                  >
+                    Delete
+                  </button>
+                )}
               </div>
             ))}
 
@@ -374,6 +401,19 @@ const [certifications, setCertifications] = useState([""]);
                   className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
                 />
               </div>
+              
+              {projects.length > 1 && (
+                <button
+                  onClick={() =>
+                    setProjects(
+                      projects.filter((_, i) => i !== index)
+                    )
+                  }
+                  className="mt-2 rounded-lg bg-red-600 px-4 py-2 text-white"
+                >
+                  Delete
+                </button>
+              )}
               </div>
             ))}
 
@@ -418,6 +458,19 @@ const [certifications, setCertifications] = useState([""]);
                     placeholder="Enter skill"
                     className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
                   />
+
+                  {skills.length > 1 && (
+                    <button
+                      onClick={() =>
+                        setSkills(
+                          skills.filter((_, i) => i !== index)
+                        )
+                      }
+                      className="mt-2 rounded-lg bg-red-600 px-4 py-2 text-white"
+                    >
+                      Delete
+                    </button>
+                  )}
                 </div>
               ))}
 
@@ -452,6 +505,19 @@ const [certifications, setCertifications] = useState([""]);
                   placeholder="Enter certification name"
                   className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
                 />
+
+                {certifications.length > 1 && (
+                  <button
+                    onClick={() =>
+                      setCertifications(
+                        certifications.filter((_, i) => i !== index)
+                      )
+                    }
+                    className="mt-2 rounded-lg bg-red-600 px-4 py-2 text-white"
+                  >
+                    Delete
+                  </button>
+                )}
               </div>
             ))}
 
@@ -467,6 +533,50 @@ const [certifications, setCertifications] = useState([""]);
             >
               + Add Certification
             </button>
+
+          <h2 className="mt-8 mb-4 text-xl font-bold">
+            Achievements
+          </h2>
+
+          {achievements.map((achievement, index) => (
+            <div key={index} className="mb-3">
+              <input
+                type="text"
+                value={achievement}
+                onChange={(e) => {
+                  const updated = [...achievements];
+                  updated[index] = e.target.value;
+                  setAchievements(updated);
+                }}
+                placeholder="Enter achievement"
+                className="w-full rounded-lg border p-3"
+              />
+
+              {achievements.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() =>
+                    setAchievements(
+                      achievements.filter((_, i) => i !== index)
+                    )
+                  }
+                  className="mt-2 rounded-lg bg-red-600 px-4 py-2 text-white"
+                >
+                  Delete Achievement
+                </button>
+              )}
+            </div>
+          ))}
+
+            <button
+              onClick={() =>
+                setAchievements([...achievements, ""])
+              }
+              className="rounded-lg bg-blue-600 px-4 py-2 text-white"
+            >
+              + Add Achievement
+            </button>
+            
             </div>
           </div>
         </div>
@@ -594,6 +704,16 @@ const [certifications, setCertifications] = useState([""]);
           {certifications.map((certification, index) => (
             <p key={index} className="mb-2">
               • {certification || "Certification"}
+            </p>
+          ))}
+
+          <h3 className="mt-6 mb-3 border-b border-gray-400 pb-1 text-sm font-bold uppercase tracking-wider">
+            Achievements
+          </h3>
+
+          {achievements.map((achievement, index) => (
+            <p key={index} className="mb-2">
+              • {achievement || "Achievement"}
             </p>
           ))}
         </div>
