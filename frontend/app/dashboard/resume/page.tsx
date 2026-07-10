@@ -4,6 +4,8 @@ import ProfessionalTemplate from "@/src/components/templates/ProfessionalTemplat
 import ModernTemplate from "@/src/components/templates/ModernTemplate";
 import MinimalTemplate from "@/src/components/templates/MinimalTemplate";
 import A4Page from "@/src/components/resume/A4Page";
+import { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 export default function ResumePage() {
 const [name, setName] = useState("");
 const [email, setEmail] = useState("");
@@ -40,6 +42,11 @@ const [certifications, setCertifications] = useState([""]);
 const [achievements, setAchievements] = useState([""]);
 const [selectedTemplate, setSelectedTemplate] =
   useState("professional");
+const resumeRef = useRef<HTMLDivElement>(null);
+const handlePrint = useReactToPrint({
+  contentRef: resumeRef,
+  documentTitle: `${name || "Resume"}-CVForge`,
+});
 
   return (
     <div className="min-h-screen bg-black text-white p-8">
@@ -588,9 +595,17 @@ const [selectedTemplate, setSelectedTemplate] =
         </div>
         <div className="sticky top-6 self-start max-h-[90vh] overflow-y-auto">
           <div className="sticky top-0 z-10 bg-black pb-4">
+             <div className="mb-4 flex items-center justify-between">
             <h2 className="mb-4 text-xl font-semibold">
               Choose Template
             </h2>
+           <button
+              onClick={handlePrint}
+              className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+            >
+              Download PDF
+            </button>
+          </div>
 
             <div className="flex gap-3">
             <button
@@ -615,6 +630,7 @@ const [selectedTemplate, setSelectedTemplate] =
             </button>
           </div>
           </div>
+          <div ref={resumeRef}>
           {selectedTemplate === "professional" && (
              <A4Page>
             <ProfessionalTemplate
@@ -672,6 +688,7 @@ const [selectedTemplate, setSelectedTemplate] =
             />
              </A4Page>
           )}
+        </div>
         </div>
       </div>
       </div>
