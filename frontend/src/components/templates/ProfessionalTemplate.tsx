@@ -1,4 +1,4 @@
-import { Mail, Phone } from "lucide-react";
+import { Mail, Phone, MapPin, Globe } from "lucide-react";
 import {
   FaGithub,
   FaLinkedin,
@@ -33,7 +33,14 @@ interface ProfessionalTemplateProps {
   experience: Experience[];
   projects: Project[];
 
-  skills: string[];
+  skills: {
+  languages: string[];
+  frameworks: string[];
+  databases: string[];
+  tools: string[];
+  concepts: string[];
+};
+
   certifications: string[];
   achievements: string[];
 }
@@ -73,10 +80,10 @@ export default function ProfessionalTemplate({
                   <span>{phone}</span>
                 </div>
 
-                <p>
-                  <span className="font-medium">Location:</span>{" "}
-                  {location}
-                </p>
+                <div className="flex items-center gap-2">
+                  <MapPin size={14} />
+                  <span>{location}</span>
+                </div>
               </div>
 
               <div className="space-y-1 text-right">
@@ -90,10 +97,10 @@ export default function ProfessionalTemplate({
                   <span>{github}</span>
                 </div>
 
-                <p>
-                  <span className="font-medium">Portfolio:</span>{" "}
-                  {portfolio}
-                </p>
+                <div className="flex items-center gap-2">
+                  <Globe size={14} />
+                  <span>{portfolio}</span>
+                </div>
               </div>
             </div>
             </div>
@@ -160,11 +167,62 @@ export default function ProfessionalTemplate({
             Skills
           </h3>
 
-          <p className="text-sm">
-            {skills
-              .filter((skill) => skill.trim())
-              .join(" • ")}
-          </p>
+          <div className="space-y-2 text-sm">
+            {skills.languages.some((s) => s.trim()) && (
+              <p>
+                <span className="font-semibold">
+                  Languages:
+                </span>{" "}
+                {skills.languages
+                  .filter((s) => s.trim())
+                  .join(" • ")}
+              </p>
+            )}
+
+            {skills.frameworks.some((s) => s.trim()) && (
+              <p>
+                <span className="font-semibold">
+                  Frameworks:
+                </span>{" "}
+                {skills.frameworks
+                  .filter((s) => s.trim())
+                  .join(" • ")}
+              </p>
+            )}
+
+            {skills.databases.some((s) => s.trim()) && (
+              <p>
+                <span className="font-semibold">
+                  Databases:
+                </span>{" "}
+                {skills.databases
+                  .filter((s) => s.trim())
+                  .join(" • ")}
+              </p>
+            )}
+
+            {skills.tools.some((s) => s.trim()) && (
+              <p>
+                <span className="font-semibold">
+                  Tools:
+                </span>{" "}
+                {skills.tools
+                  .filter((s) => s.trim())
+                  .join(" • ")}
+              </p>
+            )}
+
+            {skills.concepts.some((s) => s.trim()) && (
+              <p>
+                <span className="font-semibold">
+                  Concepts:
+                </span>{" "}
+                {skills.concepts
+                  .filter((s) => s.trim())
+                  .join(" • ")}
+              </p>
+            )}
+          </div>
 
           <h3 className="mt-6 mb-3 border-b border-gray-400 pb-1 text-sm font-bold uppercase tracking-wider">
             Certifications

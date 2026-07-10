@@ -1,3 +1,8 @@
+import { Mail, Phone, MapPin, Globe } from "lucide-react";
+import {
+  FaGithub,
+  FaLinkedin,
+} from "react-icons/fa";
 type Education = {
   degree: string;
   college: string;
@@ -28,7 +33,14 @@ interface ModernTemplateProps {
   experience: Experience[];
   projects: Project[];
 
-  skills: string[];
+  skills: {
+  languages: string[];
+  frameworks: string[];
+  databases: string[];
+  tools: string[];
+  concepts: string[];
+};
+
   certifications: string[];
   achievements: string[];
 }
@@ -55,19 +67,37 @@ export default function ModernTemplate({
                     {name || "Your Name"}
                 </h1>
 
-                <p className="mt-2 text-gray-600">
-                    {email} • {phone} • {location}
-                </p>
+                <div className="mt-3 space-y-2 text-gray-600">
+                  <div className="flex items-center gap-2">
+                    <Mail size={14} />
+                    <span>{email}</span>
+                  </div>
 
-                <p className="text-gray-600">
-                    {linkedin} • {github}
-                </p>
+                  <div className="flex items-center gap-2">
+                    <Phone size={14} />
+                    <span>{phone}</span>
+                  </div>
 
-                {portfolio && (
-                    <p className="text-gray-600">
-                    {portfolio}
-                    </p>
-                )}
+                  <div className="flex items-center gap-2">
+                    <MapPin size={14} />
+                    <span>{location}</span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <FaLinkedin size={14} />
+                    <span>{linkedin}</span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <FaGithub size={14} />
+                    <span>{github}</span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <Globe size={14} />
+                    <span>{portfolio}</span>
+                  </div>
+                </div>
                 </div>
 
           <h3 className="mt-8 mb-4 border-l-4 border-black pl-3 text-lg font-bold uppercase tracking-wider">
@@ -135,17 +165,37 @@ export default function ModernTemplate({
             Skills
           </h3>
 
-        <div className="flex flex-wrap gap-2">
-        {skills
-            .filter((skill) => skill.trim())
-            .map((skill, index) => (
-            <span
-                key={index}
-                className="rounded-full border border-gray-300 px-3 py-1 text-sm font-medium"
-            >
-                {skill}
-            </span>
-            ))}
+        <div className="space-y-3">
+          {Object.entries({
+            Languages: skills.languages,
+            Frameworks: skills.frameworks,
+            Databases: skills.databases,
+            Tools: skills.tools,
+            Concepts: skills.concepts,
+          }).map(([category, items]) => {
+            const filtered = items.filter((s) => s.trim());
+
+            if (filtered.length === 0) return null;
+
+            return (
+              <div key={category}>
+                <p className="mb-2 text-sm font-semibold">
+                  {category}
+                </p>
+
+                <div className="flex flex-wrap gap-2">
+                  {filtered.map((skill, index) => (
+                    <span
+                      key={index}
+                      className="rounded-full border border-gray-300 px-3 py-1 text-sm font-medium"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
         </div>
 
           <h3 className="mt-8 mb-4 border-l-4 border-black pl-3 text-lg font-bold uppercase tracking-wider">

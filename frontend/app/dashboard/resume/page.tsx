@@ -29,7 +29,13 @@ const [projects, setProjects] = useState([
   },
 ]);
 
-const [skills, setSkills] = useState([""]);
+const [skills, setSkills] = useState({
+  languages: [""],
+  frameworks: [""],
+  databases: [""],
+  tools: [""],
+  concepts: [""],
+});
 
 const [experience, setExperience] = useState([
   {
@@ -48,6 +54,28 @@ const handlePrint = useReactToPrint({
   contentRef: resumeRef,
   documentTitle: `${name || "Resume"}-CVForge`,
 });
+const skillCategories = [
+  {
+    key: "languages",
+    label: "Programming Languages",
+  },
+  {
+    key: "frameworks",
+    label: "Frameworks & Libraries",
+  },
+  {
+    key: "databases",
+    label: "Databases",
+  },
+  {
+    key: "tools",
+    label: "Tools & Platforms",
+  },
+  {
+    key: "concepts",
+    label: "Core Concepts",
+  },
+] as const;
 
   return (
     <div className="min-h-screen bg-black text-white p-8">
@@ -511,79 +539,65 @@ const handlePrint = useReactToPrint({
               Skills
             </h2>
 
-            <div className="mb-4">
-              <label className="block text-sm mb-2">
-                Skills
-              </label>
-              {skills.map((skill, index) => (
-                <div key={index} className="mb-4">
-                  <div className="mb-2 flex items-center justify-between">
-                    <label className="text-sm">
-                      Skill {index + 1}
-                    </label>
+            {skillCategories.map(({ key, label }) => (
+              <div key={key} className="mb-6">
+                <label className="block text-sm mb-2">
+                  {label}
+                </label>
 
-                    {skills.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setSkills(
-                            skills.filter((_, i) => i !== index)
-                          )
-                        }
-                        className="
-                          text-zinc-500
-                          hover:text-red-400
-                          transition-colors
-                        "
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    )}
+                {skills[key].map((skill, index) => (
+                  <div key={index} className="mb-4">
+                    <input
+                      type="text"
+                      value={skill}
+                      onChange={(e) => {
+                        const updated = [...skills[key]];
+                        updated[index] = e.target.value;
+
+                        setSkills({
+                          ...skills,
+                          [key]: updated,
+                        });
+                      }}
+                      placeholder={`Enter ${label}`}
+                      className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
+                    />
                   </div>
+                ))}
 
-                  <input
-                    type="text"
-                    value={skill}
-                    onChange={(e) => {
-                      const updatedSkills = [...skills];
-                      updatedSkills[index] = e.target.value;
-                      setSkills(updatedSkills);
-                    }}
-                    placeholder="Enter Skill"
-                    className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
-                  />
-                </div>
-              ))}
-
-              <button
-                type="button"
-                onClick={() =>
-                  setSkills([...skills, ""])
-                }
-                className="
-                  rounded-lg
-                  px-3
-                  py-2
-                  text-sm
-                  font-medium
-                  bg-zinc-900
-                  text-zinc-400
-                  border
-                  border-zinc-700
-                  hover:bg-zinc-800
-                  hover:text-white
-                  transition-all
-                "
-              >
-                + Add Skill
-              </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setSkills({
+                      ...skills,
+                      [key]: [...skills[key], ""],
+                    })
+                  }
+                  className="
+                    rounded-lg
+                    px-3
+                    py-2
+                    text-sm
+                    font-medium
+                    bg-zinc-900
+                    text-zinc-400
+                    border
+                    border-zinc-700
+                    hover:bg-zinc-800
+                    hover:text-white
+                    transition-all
+                  "
+                >
+                  + Add {label}
+                </button>
+              </div>
+            ))}
 
             <h2 className="text-xl font-semibold mt-6 mb-4">
               Certifications
             </h2>
-
             {certifications.map((certification, index) => (
-              <div key={index} className="mb-4">
+              <div key={index} className="mb-3">
                 <div className="mb-2 flex items-center justify-between">
                   <label className="text-sm">
                     Certification {index + 1}
@@ -648,7 +662,7 @@ const handlePrint = useReactToPrint({
               + Add Certification
             </button>
 
-          <h2 className="mt-8 mb-4 text-xl font-bold">
+          <h2 className="text-xl font-semibold mt-6 mb-4">
             Achievements
           </h2>
 
@@ -717,7 +731,6 @@ const handlePrint = useReactToPrint({
             
             </div>
           </div>
-        </div>
         <div className="sticky top-6 self-start max-h-[90vh] overflow-y-auto">
           <div className="sticky top-0 z-10 bg-black pb-4">
              <div className="mb-4 flex items-center justify-start gap-13">
@@ -845,7 +858,7 @@ const handlePrint = useReactToPrint({
         </div>
         </div>
         </div>
-      </div>
+        </div>
       </div>
     );
 }

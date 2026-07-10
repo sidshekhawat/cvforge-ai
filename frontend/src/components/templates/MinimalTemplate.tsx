@@ -1,3 +1,8 @@
+import { Mail, Phone, MapPin, Globe } from "lucide-react";
+import {
+  FaGithub,
+  FaLinkedin,
+} from "react-icons/fa";
 type Education = {
   degree: string;
   college: string;
@@ -28,7 +33,14 @@ interface MinimalTemplateProps {
   experience: Experience[];
   projects: Project[];
 
-  skills: string[];
+  skills: {
+  languages: string[];
+  frameworks: string[];
+  databases: string[];
+  tools: string[];
+  concepts: string[];
+};
+
   certifications: string[];
   achievements: string[];
 }
@@ -56,19 +68,37 @@ export default function MinimalTemplate({
                 {name || "Your Name"}
             </h1>
 
-            <p className="mt-2 text-sm text-gray-600">
-                {email} • {phone} • {location}
-            </p>
+            <div className="mt-3 space-y-2 text-sm text-gray-600">
+              <div className="flex items-center gap-2">
+                <Mail size={14} />
+                <span>{email}</span>
+              </div>
 
-            <p className="text-sm text-gray-600">
-                {linkedin} • {github}
-            </p>
+              <div className="flex items-center gap-2">
+                <Phone size={14} />
+                <span>{phone}</span>
+              </div>
 
-            {portfolio && (
-                <p className="text-sm text-gray-600">
-                {portfolio}
-                </p>
-            )}
+              <div className="flex items-center gap-2">
+                <MapPin size={14} />
+                <span>{location}</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <FaLinkedin size={14} />
+                <span>{linkedin}</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <FaGithub size={14} />
+                <span>{github}</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Globe size={14} />
+                <span>{portfolio}</span>
+              </div>
+            </div>
             </div>
 
           <h3 className="mt-12 mb-4 text-sm font-bold tracking-[0.15em]">
@@ -127,11 +157,28 @@ export default function MinimalTemplate({
             Skills
           </h3>
 
-        <p className="text-sm leading-relaxed">
-        {skills
-            .filter((skill) => skill.trim())
-            .join(" • ")}
-        </p>
+        <div className="space-y-2 text-sm leading-relaxed">
+          {Object.entries({
+            Languages: skills.languages,
+            Frameworks: skills.frameworks,
+            Databases: skills.databases,
+            Tools: skills.tools,
+            Concepts: skills.concepts,
+          }).map(([category, items]) => {
+            const filtered = items.filter((s) => s.trim());
+
+            if (filtered.length === 0) return null;
+
+            return (
+              <p key={category}>
+                <span className="font-semibold">
+                  {category}:
+                </span>{" "}
+                {filtered.join(" • ")}
+              </p>
+            );
+          })}
+        </div>
 
           <h3 className="mt-12 mb-4 text-sm font-bold tracking-[0.15em]">
             Certifications
