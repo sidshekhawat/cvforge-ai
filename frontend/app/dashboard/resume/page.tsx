@@ -6,6 +6,7 @@ import MinimalTemplate from "@/src/components/templates/MinimalTemplate";
 import A4Page from "@/src/components/resume/A4Page";
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
+import { Trash2 } from "lucide-react";
 export default function ResumePage() {
 const [name, setName] = useState("");
 const [email, setEmail] = useState("");
@@ -50,9 +51,14 @@ const handlePrint = useReactToPrint({
 
   return (
     <div className="min-h-screen bg-black text-white p-8">
-      <h1 className="mb-8 text-4xl font-bold">
-        Resume Builder
-      </h1>
+      <div className="mb-6">
+        <h1 className="text-4xl font-bold text-white">
+          Resume Builder
+        </h1>
+        <p className="mt-1 text-lg text-gray-400">
+          Create, preview and export ATS-friendly resumes.
+        </p>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="rounded-2xl border border-cyan-400/20 bg-cyan-500/5 p-6">
@@ -180,6 +186,25 @@ const handlePrint = useReactToPrint({
                 key={index}
                 className="mb-6 rounded-lg border border-zinc-700 p-4"
               >
+                {education.length > 1 && (
+                  <div className="mb-4 flex justify-end">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setEducation(
+                          education.filter((_, i) => i !== index)
+                        )
+                      }
+                      className="
+                        text-zinc-500
+                        hover:text-red-400
+                        transition-colors
+                      "
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                )}
                 <div className="mb-4">
                   <label className="block text-sm mb-2">
                     Degree
@@ -217,19 +242,6 @@ const handlePrint = useReactToPrint({
                     className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
                   />
                 </div>
-                {education.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setEducation(
-                        education.filter((_, i) => i !== index)
-                      )
-                    }
-                    className="mt-2 rounded-lg bg-red-600 px-4 py-2 text-white"
-                  >
-                    Delete Education
-                  </button>
-                )}
               </div>
             ))}
 
@@ -244,7 +256,20 @@ const handlePrint = useReactToPrint({
                   },
                 ])
               }
-              className="mt-2 rounded-lg bg-blue-600 px-4 py-2"
+              className="
+                rounded-lg
+                px-3
+                py-2
+                text-sm
+                font-medium
+                bg-zinc-900
+                text-zinc-400
+                border
+                border-zinc-700
+                hover:bg-zinc-800
+                hover:text-white
+                transition-all
+              "
             >
               + Add Education
             </button>
@@ -258,6 +283,25 @@ const handlePrint = useReactToPrint({
                 key={index}
                 className="mb-6 rounded-lg border border-zinc-700 p-4"
               >
+                {experience.length > 1 && (
+                  <div className="mb-4 flex justify-end">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setExperience(
+                          experience.filter((_, i) => i !== index)
+                        )
+                      }
+                      className="
+                        text-zinc-500
+                        hover:text-red-400
+                        transition-colors
+                      "
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                )}
                 <div className="mb-4">
                   <label className="block text-sm mb-2">
                     Role
@@ -333,19 +377,6 @@ const handlePrint = useReactToPrint({
                     className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
                   />
                 </div>
-
-                {experience.length > 1 && (
-                  <button
-                    onClick={() =>
-                      setExperience(
-                        experience.filter((_, i) => i !== index)
-                      )
-                    }
-                    className="mt-2 rounded-lg bg-red-600 px-4 py-2 text-white"
-                  >
-                    Delete
-                  </button>
-                )}
               </div>
             ))}
 
@@ -362,7 +393,20 @@ const handlePrint = useReactToPrint({
                   },
                 ])
               }
-              className="mt-2 rounded-lg bg-blue-600 px-4 py-2"
+                className="
+                rounded-lg
+                px-3
+                py-2
+                text-sm
+                font-medium
+                bg-zinc-900
+                text-zinc-400
+                border
+                border-zinc-700
+                hover:bg-zinc-800
+                hover:text-white
+                transition-all
+              "
             >
               + Add Experience
             </button>
@@ -375,8 +419,25 @@ const handlePrint = useReactToPrint({
                 key={index}
                 className="mb-6 rounded-lg border border-zinc-700 p-4"
               >
-                {/* Project fields go here */}
-
+                {projects.length > 1 && (
+                  <div className="mb-4 flex justify-end">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setProjects(
+                          projects.filter((_, i) => i !== index)
+                        )
+                      }
+                      className="
+                        text-zinc-500
+                        hover:text-red-400
+                        transition-colors
+                      "
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                )}
               <div className="mb-4">
                 <label className="block text-sm mb-2">
                   Project Name
@@ -414,19 +475,6 @@ const handlePrint = useReactToPrint({
                   className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
                 />
               </div>
-              
-              {projects.length > 1 && (
-                <button
-                  onClick={() =>
-                    setProjects(
-                      projects.filter((_, i) => i !== index)
-                    )
-                  }
-                  className="mt-2 rounded-lg bg-red-600 px-4 py-2 text-white"
-                >
-                  Delete
-                </button>
-              )}
               </div>
             ))}
 
@@ -441,7 +489,20 @@ const handlePrint = useReactToPrint({
                   },
                 ])
               }
-              className="mt-2 rounded-lg bg-blue-600 px-4 py-2"
+              className="
+                rounded-lg
+                px-3
+                py-2
+                text-sm
+                font-medium
+                bg-zinc-900
+                text-zinc-400
+                border
+                border-zinc-700
+                hover:bg-zinc-800
+                hover:text-white
+                transition-all
+              "
             >
               + Add Project
             </button>
@@ -456,9 +517,29 @@ const handlePrint = useReactToPrint({
               </label>
               {skills.map((skill, index) => (
                 <div key={index} className="mb-4">
-                  <label className="block text-sm mb-2">
-                    Skill {index + 1}
-                  </label>
+                  <div className="mb-2 flex items-center justify-between">
+                    <label className="text-sm">
+                      Skill {index + 1}
+                    </label>
+
+                    {skills.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setSkills(
+                            skills.filter((_, i) => i !== index)
+                          )
+                        }
+                        className="
+                          text-zinc-500
+                          hover:text-red-400
+                          transition-colors
+                        "
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    )}
+                  </div>
 
                   <input
                     type="text"
@@ -468,22 +549,9 @@ const handlePrint = useReactToPrint({
                       updatedSkills[index] = e.target.value;
                       setSkills(updatedSkills);
                     }}
-                    placeholder="Enter skill"
+                    placeholder="Enter Skill"
                     className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
                   />
-
-                  {skills.length > 1 && (
-                    <button
-                      onClick={() =>
-                        setSkills(
-                          skills.filter((_, i) => i !== index)
-                        )
-                      }
-                      className="mt-2 rounded-lg bg-red-600 px-4 py-2 text-white"
-                    >
-                      Delete
-                    </button>
-                  )}
                 </div>
               ))}
 
@@ -492,7 +560,20 @@ const handlePrint = useReactToPrint({
                 onClick={() =>
                   setSkills([...skills, ""])
                 }
-                className="mt-2 rounded-lg bg-blue-600 px-4 py-2"
+                className="
+                  rounded-lg
+                  px-3
+                  py-2
+                  text-sm
+                  font-medium
+                  bg-zinc-900
+                  text-zinc-400
+                  border
+                  border-zinc-700
+                  hover:bg-zinc-800
+                  hover:text-white
+                  transition-all
+                "
               >
                 + Add Skill
               </button>
@@ -503,9 +584,29 @@ const handlePrint = useReactToPrint({
 
             {certifications.map((certification, index) => (
               <div key={index} className="mb-4">
-                <label className="block text-sm mb-2">
-                  Certification {index + 1}
-                </label>
+                <div className="mb-2 flex items-center justify-between">
+                  <label className="text-sm">
+                    Certification {index + 1}
+                  </label>
+
+                  {certifications.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setCertifications(
+                          certifications.filter((_, i) => i !== index)
+                        )
+                      }
+                      className="
+                        text-zinc-500
+                        hover:text-red-400
+                        transition-colors
+                      "
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  )}
+                </div>
 
                 <input
                   type="text"
@@ -515,22 +616,9 @@ const handlePrint = useReactToPrint({
                     updatedCertifications[index] = e.target.value;
                     setCertifications(updatedCertifications);
                   }}
-                  placeholder="Enter certification name"
+                  placeholder="Enter Certifications"
                   className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
                 />
-
-                {certifications.length > 1 && (
-                  <button
-                    onClick={() =>
-                      setCertifications(
-                        certifications.filter((_, i) => i !== index)
-                      )
-                    }
-                    className="mt-2 rounded-lg bg-red-600 px-4 py-2 text-white"
-                  >
-                    Delete
-                  </button>
-                )}
               </div>
             ))}
 
@@ -542,7 +630,20 @@ const handlePrint = useReactToPrint({
                   "",
                 ])
               }
-              className="mt-2 rounded-lg bg-blue-600 px-4 py-2"
+              className="
+                rounded-lg
+                px-3
+                py-2
+                text-sm
+                font-medium
+                bg-zinc-900
+                text-zinc-400
+                border
+                border-zinc-700
+                hover:bg-zinc-800
+                hover:text-white
+                transition-all
+              "
             >
               + Add Certification
             </button>
@@ -553,6 +654,31 @@ const handlePrint = useReactToPrint({
 
           {achievements.map((achievement, index) => (
             <div key={index} className="mb-3">
+
+              <div className="mb-2 flex items-center justify-between">
+                <label className="text-sm">
+                  Achievement {index + 1}
+                </label>
+
+                {achievements.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setAchievements(
+                        achievements.filter((_, i) => i !== index)
+                      )
+                    }
+                    className="
+                      text-zinc-500
+                      hover:text-red-400
+                      transition-colors
+                    "
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                )}
+              </div>
+
               <input
                 type="text"
                 value={achievement}
@@ -561,23 +687,9 @@ const handlePrint = useReactToPrint({
                   updated[index] = e.target.value;
                   setAchievements(updated);
                 }}
-                placeholder="Enter achievement"
-                className="w-full rounded-lg border p-3"
+                placeholder="Enter Achievement"
+                className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3"
               />
-
-              {achievements.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() =>
-                    setAchievements(
-                      achievements.filter((_, i) => i !== index)
-                    )
-                  }
-                  className="mt-2 rounded-lg bg-red-600 px-4 py-2 text-white"
-                >
-                  Delete Achievement
-                </button>
-              )}
             </div>
           ))}
 
@@ -585,7 +697,20 @@ const handlePrint = useReactToPrint({
               onClick={() =>
                 setAchievements([...achievements, ""])
               }
-              className="rounded-lg bg-blue-600 px-4 py-2 text-white"
+              className="
+                rounded-lg
+                px-3
+                py-2
+                text-sm
+                font-medium
+                bg-zinc-900
+                text-zinc-400
+                border
+                border-zinc-700
+                hover:bg-zinc-800
+                hover:text-white
+                transition-all
+              "
             >
               + Add Achievement
             </button>
@@ -595,41 +720,70 @@ const handlePrint = useReactToPrint({
         </div>
         <div className="sticky top-6 self-start max-h-[90vh] overflow-y-auto">
           <div className="sticky top-0 z-10 bg-black pb-4">
-             <div className="mb-4 flex items-center justify-between">
-            <h2 className="mb-4 text-xl font-semibold">
-              Choose Template
-            </h2>
-           <button
-              onClick={handlePrint}
-              className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-            >
-              Download PDF
-            </button>
-          </div>
+             <div className="mb-4 flex items-center justify-start gap-13">
+                <h2 className="text-xl font-semibold">
+                  Choose Template
+                </h2>
 
-            <div className="flex gap-3">
+                <button
+                  onClick={handlePrint}
+                  className="
+                    rounded-lg
+                    px-3
+                    py-1.5
+                    text-sm
+                    font-medium
+                    bg-zinc-900
+                    text-zinc-400
+                    border-zinc-700
+                    hover:bg-zinc-800
+                    hover:text-white
+                    transition-all border
+                  "
+                >
+                  Download PDF
+                </button>
+              </div>
+
+            <div className="flex gap-4 pl-2">
             <button
               onClick={() => setSelectedTemplate("professional")}
-              className="rounded-lg bg-blue-600 px-4 py-2"
+              className={`rounded-lg px-4 py-2 font-medium transition-all border ${
+                selectedTemplate === "professional"
+                  ? "bg-white text-black border-white"
+                  : "bg-zinc-900 text-zinc-400 border-zinc-700 hover:bg-zinc-800 hover:text-white"
+              }`}
             >
               Professional
             </button>
 
             <button
               onClick={() => setSelectedTemplate("modern")}
-              className="rounded-lg bg-blue-600 px-4 py-2"
+              className={`rounded-lg px-4 py-2 font-medium transition-all border ${
+                selectedTemplate === "modern"
+                  ? "bg-white text-black border-white"
+                  : "bg-zinc-900 text-zinc-400 border-zinc-700 hover:bg-zinc-800 hover:text-white"
+              }`}
             >
               Modern
             </button>
 
             <button
               onClick={() => setSelectedTemplate("minimal")}
-              className="rounded-lg bg-blue-600 px-4 py-2"
+              className={`rounded-lg px-4 py-2 font-medium transition-all border ${
+                selectedTemplate === "minimal"
+                  ? "bg-white text-black border-white"
+                  : "bg-zinc-900 text-zinc-400 border-zinc-700 hover:bg-zinc-800 hover:text-white"
+              }`}
             >
               Minimal
             </button>
           </div>
           </div>
+          <h3 className="mb-4 text-sm font-medium uppercase tracking-wider text-zinc-400">
+            Resume Preview
+          </h3>
+          <div className="rounded-2xl bg-zinc-900 p-6 border border-zinc-800">
           <div ref={resumeRef}>
           {selectedTemplate === "professional" && (
              <A4Page>
@@ -688,6 +842,7 @@ const handlePrint = useReactToPrint({
             />
              </A4Page>
           )}
+        </div>
         </div>
         </div>
       </div>

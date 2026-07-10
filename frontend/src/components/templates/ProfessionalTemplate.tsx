@@ -1,3 +1,8 @@
+import { Mail, Phone } from "lucide-react";
+import {
+  FaGithub,
+  FaLinkedin,
+} from "react-icons/fa";
 type Education = {
   degree: string;
   college: string;
@@ -57,39 +62,39 @@ export default function ProfessionalTemplate({
               </h1>
               <div className="mt-4 flex justify-between text-[15px] text-gray-600">
               
-              <div>
-                <p>
-                  <span className="font-medium">Email:</span>{" "}
-                  {email}
-                </p>
+             <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <Mail size={14} />
+                  <span>{email}</span>
+                </div>
 
-                <p>
-                  <span className="font-medium">Phone:</span>{" "}
-                  {phone}
-                </p>
+                <div className="flex items-center gap-2">
+                  <Phone size={14} />
+                  <span>{phone}</span>
+                </div>
 
                 <p>
                   <span className="font-medium">Location:</span>{" "}
                   {location}
                 </p>
+              </div>
+
+              <div className="space-y-1 text-right">
+                <div className="flex items-center justify-end gap-2">
+                  <FaLinkedin size={14} />
+                  <span>{linkedin}</span>
                 </div>
 
-                <div className="text-right">
-                  <p>
-                    <span className="font-medium">LinkedIn:</span>{" "}
-                    {linkedin}
-                  </p>
-
-                  <p>
-                    <span className="font-medium">GitHub:</span>{" "}
-                    {github}
-                  </p>
-
-                  <p>
-                    <span className="font-medium">Portfolio:</span>{" "}
-                    {portfolio}
-                  </p>
+                <div className="flex items-center justify-end gap-2">
+                  <FaGithub size={14} />
+                  <span>{github}</span>
                 </div>
+
+                <p>
+                  <span className="font-medium">Portfolio:</span>{" "}
+                  {portfolio}
+                </p>
+              </div>
             </div>
             </div>
           
