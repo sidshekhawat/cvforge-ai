@@ -21,6 +21,10 @@ export default function LoginPage() {
         "access_token",
         result.access_token
       );
+      console.log(
+        "SAVED TOKEN:",
+        localStorage.getItem("access_token")
+      );
 
       router.push("/dashboard");
     } catch (error) {

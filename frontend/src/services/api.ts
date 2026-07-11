@@ -1,12 +1,13 @@
 import { ATSAnalysis } from "@/src/types/ats";
 
-const API_BASE_URL = "http://localhost:8000";
+const API_BASE_URL = "http://127.0.0.1:8000";
 
 export async function analyzeResume(
   resume: string,
   jobDescription: string
 ): Promise<ATSAnalysis> {
-   const token = localStorage.getItem(
+
+  const token = localStorage.getItem(
     "access_token"
   );
 
