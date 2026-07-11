@@ -9,7 +9,7 @@ export default function ATSSkillsAnalysis({
 }: Props) {
   return (
     <div className="rounded-xl border bg-white p-6 shadow-md">
-      <h2 className="mb-6 text-lg font-semibold text-gray-900">
+      <h2 className="text-xl font-semibold text-gray-900">
         Skills Analysis
       </h2>
 

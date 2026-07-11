@@ -11,9 +11,11 @@ export default function ImprovementReportCard({
         Improvement Report
       </h2>
 
-      <p className="text-gray-700 leading-relaxed">
-        {report}
-      </p>
+      <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+        <p className="leading-7 text-gray-700">
+          {report}
+        </p>
+      </div>
     </div>
   );
 }
