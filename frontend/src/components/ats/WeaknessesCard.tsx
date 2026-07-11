@@ -6,7 +6,7 @@ export default function WeaknessesCard({
   weaknesses,
 }: Props) {
   return (
-    <div className="rounded-xl border bg-white p-6 shadow-md transition hover:shadow-lg">
+    <div className="min-h-[180px] rounded-xl border bg-white p-6 shadow-md transition hover:shadow-lg">
       <h2 className="text-lg font-semibold text-gray-900">
         Weaknesses
       </h2>

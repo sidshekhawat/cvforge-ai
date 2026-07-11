@@ -26,10 +26,6 @@ export async function analyzeResume(
     }
   );
 
-  if (!response.ok) {
-    throw new Error("Failed to analyze resume");
-  }
-
   return response.json();
 }
 

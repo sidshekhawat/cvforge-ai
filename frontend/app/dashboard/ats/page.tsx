@@ -8,13 +8,13 @@ import {
   analyzeResume,
   uploadResume,
 } from "@/src/services/api";
-import ATSScoreCard from "@/src/components/ats/ATSScoreCard";
+import ATSHeroCard from "@/src/components/ats/ATSHeroCard";
 import SectionScores from "@/src/components/ats/SectionScores";
 import StrengthsCard from "@/src/components/ats/StrengthsCard";
 import WeaknessesCard from "@/src/components/ats/WeaknessesCard";
-import MissingSkillsCard from "@/src/components/ats/MissingSkillsCard";
 import RecommendationsCard from "@/src/components/ats/RecommendationsCard";
 import ImprovementReportCard from "@/src/components/ats/ImprovementReportCard";
+import ATSSkillsAnalysis from "@/src/components/ats/ATSSkillsAnalysis";
 
 export default function ATSPage() {
 
@@ -71,6 +71,7 @@ async function runAnalysis() {
     setLoading(false);
   }
 }
+console.log("Analysis:", analysis);
 
   return (
     <div className="min-h-screen bg-black text-white p-8">
@@ -143,9 +144,10 @@ async function runAnalysis() {
 
           {analysis ? (
           <>
-            <ATSScoreCard
+            <ATSHeroCard
               score={analysis.overall_match}
               verdict={analysis.verdict}
+              summary={analysis.analysis_summary}
             />
 
             <SectionScores
@@ -156,21 +158,26 @@ async function runAnalysis() {
               certifications={analysis.certification_match}
             />
 
-            <StrengthsCard
-              strengths={analysis.strengths}
-            />
+            <div className="grid gap-6 md:grid-cols-2">
 
-            <WeaknessesCard
-              weaknesses={analysis.weaknesses}
-            />
+              <StrengthsCard
+                strengths={analysis.strengths}
+              />
 
-            <MissingSkillsCard
-              skills={analysis.missing_skills}
+              <WeaknessesCard
+                weaknesses={analysis.weaknesses}
+              />
+
+            </div>
+
+            <ATSSkillsAnalysis
+              matchedSkills={analysis.matched_skills}
+              missingSkills={analysis.missing_skills}
             />
 
             <RecommendationsCard
               recommendations={
-                analysis.recommendations
+                analysis.improvement_suggestions
               }
             />
 

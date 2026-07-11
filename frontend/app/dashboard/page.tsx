@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import ATSScoreCard from "@/src/components/ats/ATSScoreCard";
+import ATSHeroCard from "@/src/components/ats/ATSHeroCard";
 import SectionScores from "@/src/components/ats/SectionScores";
 import StrengthsCard from "@/src/components/ats/StrengthsCard";
 import WeaknessesCard from "@/src/components/ats/WeaknessesCard";
@@ -27,6 +27,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+
 
 function getATSVerdict(score: number) {
   if (score >= 90) {
@@ -953,10 +954,11 @@ return (
 
         {analysis && (
         <>
-        <ATSScoreCard
+        <ATSHeroCard
             score={analysis.overall_match}
             verdict={analysis.verdict}
-        />
+            summary={analysis.analysis_summary}
+            />
 
         <SectionScores
             skills={analysis.skills_match}
